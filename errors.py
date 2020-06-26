@@ -43,5 +43,14 @@ def err(reason):
             + """. These  are case-sensitive. You can also put alterations """\
             + """in parentheses."""
         raise ChordError(out)
+        
+    # REASON 4 (FERMAT'S ERROR): MARGIN TOO SMALL TO PRINT LINE NUMBER
+    if reason == "fermat" or reason == 4:
+        out = """In attempting to print a chord, one line number to be """    \
+            + """displayed was too long compared to the default margin size"""\
+            + """. Ensure ThatChord is not printing chords absurdly high """  \
+            + """on the fretboard, and that the margin is defined to be """   \
+            + """suitably large (ideally 3 or more)."""
+        raise ChordError(out)
     
     raise ChordError
