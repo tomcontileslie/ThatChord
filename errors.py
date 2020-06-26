@@ -35,7 +35,7 @@ def err(reason):
             + """5, 6, 7, 9, 11, 13 only."""
         raise ChordError(out)
     
-    # REASON 3: UNRECONGISED CHORD QUALITY
+    # REASON 3: UNRECOGNISED CHORD QUALITY
     if reason == "quality" or reason == 3:
         import dicts
         out = """Unrecognised chord quality. Currently supported chord """    \
