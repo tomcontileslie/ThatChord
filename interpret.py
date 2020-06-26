@@ -96,8 +96,10 @@ def interpret(ss):
             else:
                 note_rem = pair[hv(alt)]          # remove this note
                 note_add = (note_rem + alt) % 12  # add this note
-                if note_rem in out:
-                    out.remove(note_rem)
+                if pair[0] in out:
+                    out.remove(pair[0])
+                if pair[1] in out:
+                    out.remove(pair[1])
                 if not note_add in out:
                     out.append(note_add)
                 # TODO definitely if alterations are >= 2 in either direction,
