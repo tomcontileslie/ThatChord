@@ -3,7 +3,7 @@
 ##                                                                           ##
 ##  THATCHORD BY TOM CONTI-LESLIE                                 errors.py  ##
 ##                                                                           ##
-##  This file should be loaded by all other files and contains all error     ##
+##  This file should be loaded by most other files and contains all error    ##
 ##  messages that can be returned by various files.                          ##
 ##                                                                           ##
 ##                                                                           ##
@@ -34,7 +34,8 @@ def err(reason):
         out = """Invalid alteration: you can alter the numbers 1, 2, 3, 4, """\
             + """5, 6, 7, 9, 11, 13 only."""
         raise ChordError(out)
-        
+    
+    # REASON 3: UNRECONGISED CHORD QUALITY
     if reason == "quality" or reason == 3:
         import dicts
         out = """Unrecognised chord quality. Currently supported chord """    \
