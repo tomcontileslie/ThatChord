@@ -104,7 +104,6 @@ def interpret(ss):
                     out.append(note_add)
                 # TODO definitely if alterations are >= 2 in either direction,
                 # the strategy for removing notes should be different
-                # TODO maybe just ALWAYS remove both notes from the tuple?
             Y = Y[m.end():] # remove this alteration
     
     # Scale everything to the correct key
