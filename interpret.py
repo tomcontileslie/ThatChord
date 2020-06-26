@@ -73,12 +73,12 @@ def interpret(ss):
     try:
         out1 = dicts.qualities[X]
     except KeyError:
-        err(1) # TODO custom message for unrecognised quality
+        err(1)
     
     # deal with any alterations here.
     # TODO is this the best way to deal with alterations? Do we need to take
     # more context into accout, e.g. major/minor?
-    if Y != None:
+    if Y:
         Y = Y[1 : -1] # remove parentheses from match
         while Y != "":
             m = re.match(r"([b#]+)(\d+)", Y) # first remaining alteration
@@ -110,6 +110,9 @@ def interpret(ss):
     # Scale everything to the correct key
     root = dicts.notes[W[0]] + pm(W[1 : 2])
     out1 = [(root + n) % 12 for n in out1]
+    
+    if Z:
+        
     
     # TODO test that alterations work
     # TODO add bass note

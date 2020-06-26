@@ -20,7 +20,7 @@ class ChordError(Exception):
 def err(reason):
     
     # REASON 1: INVALID INPUT
-    if reason == "chord" or reason == 1:
+    if reason == "input" or reason == 1:
         out = """Invalid chord structure: try a chord of the form """         \
             + """WXYZ", where:\n- W is a letter A-G possibly followed """     \
             + """by "b"or "#";\n- (optional) X is a chord quality, e.g. """   \
@@ -33,6 +33,14 @@ def err(reason):
     if reason == "alteration" or reason == 2:
         out = """Invalid alteration: you can alter the numbers 1, 2, 3, 4, """\
             + """5, 6, 7, 9, 11, 13 only."""
+        raise ChordError(out)
+        
+    if reason == "quality" or reason == 3:
+        import dicts
+        out = """Unrecognised chord quality. Currently supported chord """    \
+            + """qualities are: """ + str(list(dicts.qualities.keys()))       \
+            + """. These  are case-sensitive. You can also put alterations """\
+            + """in parentheses."""
         raise ChordError(out)
     
     raise ChordError
