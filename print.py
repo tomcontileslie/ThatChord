@@ -16,6 +16,7 @@
 ###############################################################################
 
 
+# import error messages
 from errors import err
 
 def text(frets, height = 5, margin = 3, head = "=", string = "|", press = "O", muted = "x"):
