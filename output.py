@@ -67,7 +67,7 @@ def text(frets, height = 5, margin = 3, head = "=", string = "|", press = "O", m
     
     # draw header if needed.
     if header:
-        out += "\n " * margin + head * (2 * n - 1)
+        out += "\n" + " " * margin + head * (2 * n - 1)
     
     # start drawing the frets. There is a special case for the lowest one if
     # no header is displayed, since we'll need to indicate what fret we're on.
