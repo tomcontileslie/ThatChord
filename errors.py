@@ -53,4 +53,12 @@ def err(reason):
             + """suitably large (ideally 3 or more)."""
         raise ChordError(out)
     
+    # REASON 5: TOO FEW FRETS FOR ANY POSSIBILITIES
+    if reason == "frets" or reason == 5:
+        out = """The number of frets is too low for one of your """           \
+            + """instrument strings to have any valid positions. Try """      \
+            + """changing the number of frets, changing the chord, or """     \
+            + """allowing more muted strings."""
+        raise ChordError(out)
+    
     raise ChordError
