@@ -17,7 +17,7 @@ I once had on a plane with no internet. With ThatChord, your chosen instrument's
 diagram format and preferences regarding muted strings and so on are *fully customisable*, with a number of presets available.
 
 ThatChord supports a large list of chord qualities (see `dicts.py`), as well as chord alterations and bass notes - and, failing that, custom note-by note input. 
-Strings such as `C`, `Fadd9` and `Bbmin11(b5)/C` are all recognised and produce delightfully simple plaintext diagrams such as:
+Strings such as `C`, `Fadd9` and `Bmin11(b5)/C` are all recognised and produce delightfully simple plaintext diagrams such as:
 ```
    x
    ===========        x           
