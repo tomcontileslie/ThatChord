@@ -60,5 +60,13 @@ def err(reason):
             + """changing the number of frets, changing the chord, or """     \
             + """allowing more muted strings."""
         raise ChordError(out)
+        
+    # REASON 6: NO CHORDS FOUND
+    if reason == "nosols" or reason == 6:
+        out = """There are no ways of playing the requested chord on this """ \
+            + """instrument, though your chord was correctly understood. """  \
+            + """Try increasing the number of frets or reducing the number """\
+            + """of important notes."""
+        raise ChordError(out)
     
     raise ChordError
