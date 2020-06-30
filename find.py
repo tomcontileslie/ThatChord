@@ -35,7 +35,7 @@ def increment(maxes, current):
             return
         current[i] = 0
 
-def other(chord, tuning, nfrets, nmute = 0, important = 0):
+def find(chord, tuning, nfrets, nmute = 0, important = 0):
     """
     This function is called in the main file, thatchord.py.
     
@@ -102,7 +102,7 @@ def other(chord, tuning, nfrets, nmute = 0, important = 0):
                 bool_mute = False
         
         # Second, check that the attempt covers the important notes
-        notes = [(attempt[i] + tuning[i]) % 12 for i in range(n)]
+        notes = [(attempt[i] + tuning[i]) % 12 for i in range(n) if attempt[i] != -1]
         bool_impo = len(set(chord[:important]) - set(notes)) == 0
         
         # if both conditions are satisfied, store the option.
