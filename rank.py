@@ -20,7 +20,7 @@
 # import error messages
 from errors import err
 
-def rank_reach(frets):
+def rank_reach(frets, chord, tuning, order):
     """
     Returns the distance between the highest and lowest fret that needs
     to be pressed when playing the chord
@@ -29,9 +29,9 @@ def rank_reach(frets):
     if len(pressed) == 0:
         return 0
     else:
-        return (max(pressed) - min(pressed)) ** 2
+        return (max(pressed) - min(pressed))
 
-def rank_spread(frets):
+def rank_spread(frets, chord, tuning, order):
     """
     Similar to reach, but includes empty strings as well, in order to measure
     how 'spread out' the chord sounds.
@@ -42,21 +42,21 @@ def rank_spread(frets):
     else:
         return max(played) - min(played)
 
-def rank_fingers(frets):
+def rank_fingers(frets, chord, tuning, order):
     """
     Returns the 'number of figners needed to play the chord', i.e. number
     of strings that are pressed.
     """
-    pressed = [i for i in frets if i != 0 and i != 1]
-    return len(pressed) ** 2
+    pressed = [i for i in frets if i != 0 and i != -1]
+    return len(pressed)
 
-def rank_pitch(frets):
+def rank_pitch(frets, chord, tuning, order):
     """
     This function prefers chords which are played lower on the fretboard.
     """
     return max(frets)
 
-def rank_full(frets, chord, tuning):
+def rank_full(frets, chord, tuning, order):
     """
     Assesses how many notes from the chord were hit.
     Only returns meaningful input if variable 'important' is set low.
@@ -71,7 +71,7 @@ def rank_full(frets, chord, tuning):
     
     return len(set(chord) - set(frets))
 
-def rank_mute(frets):
+def rank_mute(frets, chord, tuning, order):
     """
     Disadvantages chords with muted strings.
     """
@@ -96,65 +96,36 @@ def rank_bass(frets, chord, tuning, order):
         else:
             notes.append((tuning[i] + frets[i]) % 12)
     
-    #print("notes = ", notes)
-    
     # calculate how many muted strings there are
     m = 0
     for i in range(n):
         if frets[i] == -1:
             m = i + 1
-    #print("m =", m)
     
     # re-rank the order of strings to remove muted ones. simply subtract
     # m from each entry in order.
     order_norm = [i - m for i in order]
     
-    #print("order_norm = ", order_norm)
-    
     
     # now check each note in chord. Most heavily weighted is the bass.
     out = 0
     for i in range(len(chord)):
-        #print("")
-        #print("checking note ", i, ": ", chord[i])
         if chord[i] in notes:
-            #print("it is indeed played")
             # in this case, find all places where played
             places = []
             for j in range(n):
                 if chord[i] == notes[j]:
                     places.append(j)
-            #print("in these places: ", places)
             
             # find the lowest string where played
             lowest = order_norm[min(places, key = lambda x : order_norm[x])]
-            #print("the lowest string of which has rank ", lowest)
             
             # add the distance away from ideal rank to out
-            out += abs(i - lowest) / (2 ** i)
-            #print("out is now ", out)
+            out += abs(i - lowest) / (3 ** i)
     
     # normalise by the number of non-muted strings
     return out / (len(frets) - m)
 
 #  TODO doesn't work well with muted strings
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+rankfuncs = [rank_reach, rank_spread, rank_fingers, rank_pitch, rank_full, rank_mute, rank_bass]
