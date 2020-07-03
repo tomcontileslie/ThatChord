@@ -17,7 +17,7 @@ I once had on a plane with no internet. With ThatChord, your chosen instrument's
 diagram format and preferences regarding muted strings and so on are *fully customisable*, with a number of presets available.
 
 ThatChord supports a large list of chord qualities (see `dicts.py`), as well as chord alterations and bass notes - and, failing that, custom note-by note input. 
-Strings such as `C`, `Fadd9` and `Bmin11(b5)/C` are all recognised and produce delightfully simple plaintext diagrams such as:
+Strings such as `C`, `Fadd9` and `Bmin11(b5)/C` are all recognised and on guitar, produce delightfully simple plaintext diagrams such as:
 ```
    x
    ===========        x           
@@ -27,7 +27,11 @@ Strings such as `C`, `Fadd9` and `Bmin11(b5)/C` are all recognised and produce d
    | | | | | |        | O | | O |        | | | | | | 
    | | | | | |        | | | | | |        | | | | | |  
 ```
-TODO: ONCE SVG OUTPUT IS SUPPORTED, ADD SVG IMAGES
+ThatChord can also output equally simplistic, and also rather lightweight, PNG images:
+| For ukulele                         |  For guitar                  |
+| :----------------------------------:|:----------------------------:|
+| ![](img/UKULELE/UKULELE-Bbadd9.png) | ![](img/GUITAR/GUITAR-A.png) |
+These weigh a handful of kilobytes each at most.
 
 ## Using ThatChord
 
