@@ -31,6 +31,7 @@ ThatChord can also output equally simplistic, and also rather lightweight, PNG i
 | For ukulele                         |  For guitar                  |
 | :----------------------------------:|:----------------------------:|
 | ![](img/UKULELE/UKULELE-Bbadd9.png) | ![](img/GUITAR/GUITAR-A.png) |
+
 These weigh a handful of kilobytes each at most.
 
 ## Using ThatChord
