@@ -69,7 +69,7 @@ def rank_full(frets, chord, tuning, order):
         if frets[i] != -1:
             notes.append((tuning[i] + frets[i]) % 12)
     
-    return len(set(chord) - set(frets))
+    return len(set(chord) - set(notes))
 
 def rank_mute(frets, chord, tuning, order):
     """
@@ -121,7 +121,7 @@ def rank_bass(frets, chord, tuning, order):
             lowest = order_norm[min(places, key = lambda x : order_norm[x])]
             
             # add the distance away from ideal rank to out
-            out += abs(i - lowest) / (3 ** i)
+            out += abs(i - lowest) / (2 ** i)
     
     # normalise by the number of non-muted strings
     return out / (len(frets) - m)
