@@ -2,6 +2,8 @@
 
 **Created by Tom Conti-Leslie: [tomcontileslie.com](http://tomcontileslie.com).**
 
+**I am grateful for the helpful contributions of Sophie Purkis Charters.**
+
 **These files are distributed under a Creative Commons Share Alike license.**
 
 [![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
