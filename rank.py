@@ -81,7 +81,7 @@ def rank_mute(frets, chord, tuning, order):
             count *= 2
     return count - 1
 
-def rank_bass(frets, chord, tuning, order):
+def rank_structure(frets, chord, tuning, order):
     """
     Assesses how well important notes in the chord have been placed on the
     low strings.
@@ -126,6 +126,34 @@ def rank_bass(frets, chord, tuning, order):
     # normalise by the number of non-muted strings
     return out / (len(frets) - m)
 
-#  TODO doesn't work well with muted strings
+def rank_bass(frets, chord, tuning, order):
+    """
+    Penalises chords where the note played on the lowest string is not the bass
+    """
+    n         = len(frets)
     
-rankfuncs = [rank_reach, rank_spread, rank_fingers, rank_pitch, rank_full, rank_mute, rank_bass]
+    # ordernew changes order to remove muted strings
+    bignum = max(order) + 1
+    ordernew = []
+    for i in range(n):
+        if frets[i] == -1:
+            ordernew.append(bignum)
+        else:
+            ordernew.append(order[i])
+    
+    # lowest played string has min value in ordernew.
+    loword = min(ordernew)
+    lowstr = ordernew.index(loword)
+    
+    # find note played on this string
+    lownot = (frets[lowstr] + tuning[lowstr]) % 12
+    
+    # return 0 iff note is the lowest note in chord.
+    if lownot == chord[0]:
+        return 0
+    else:
+        return 1
+
+# TODO safeguard against every string muted
+    
+rankfuncs = [rank_reach, rank_spread, rank_fingers, rank_pitch, rank_full, rank_mute, rank_structure, rank_bass]
