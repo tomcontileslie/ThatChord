@@ -69,4 +69,34 @@ def err(reason):
             + """of important notes."""
         raise ChordError(out)
     
-    raise ChordError
+    # REASON 7: INVALID INPUT TYPE
+    if reason == "input type" or reason == 7:
+        out = """Invalid input type: in the settings file, please set the """ \
+            + """variable input_type to be DIRECT, TERMINAL or CONSOLE."""
+        raise ChordError(out)
+    
+    # REASON 8: INVALID OUTPUT FORMAT
+    if reason == "output format" or reason == 8:
+        out = """Invalid output format: in the settings file, please set """  \
+            + """the variable output_format to be TEXT or PNG."""
+        raise ChordError(out)
+    
+    # REASON 9: INVALID OUTPUT METHOD
+    if reason == "output method" or reason == 9:
+        out = """Invalid output method: in the settings file, please set """  \
+            + """the variable output_method to be PRINT, SPLASH or NONE."""
+        raise ChordError(out)
+    
+    # REASON 10: INVALID SAVE METHOD
+    if reason == "save method" or reason == 10:
+        out = """Invalid save method: in the settings file, please set the """\
+            + """variable save_method to be SINGLE, LIBRARY or NONE."""
+        raise ChordError(out)
+    
+    # REASON 11: INCOMPATIBLE OUTPUT SETTINGS
+    if reason == "incompatible output" or reason == 11:
+        out = """You have chosen incompatible values of output_format and """ \
+            + """output_method. See settings.py to correct this."""
+        raise ChordError(out)
+    
+    raise ChordError(str(reason))
