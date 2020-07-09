@@ -99,4 +99,14 @@ def err(reason):
             + """output_method. See settings.py to correct this."""
         raise ChordError(out)
     
+    # REASON 12: SAVE DIRECTORY DOESN'T EXIST
+    if reason == "file not found" or reason == 12:
+        out = """The output location could not be found. If you have not """  \
+            + """tweaked the settings too much, this can probably be fixed """\
+            + """by creating a new folder inside the ThatChord folder """     \
+            + """called 'diagrams' (all lowercase). If you have done some """ \
+            + """tweaking, then please check that the output directory """    \
+            + """specified in settings.py exists."""
+        raise ChordError(out)
+    
     raise ChordError(str(reason))
