@@ -53,13 +53,13 @@ ranks = [1, 2, 3, 1, 0, 0, 0, 0]
 # written the chord name after the filename.
 # CONSOLE assumes you are using a Python console and will ask for input.
 # --------------------------------------------------------------------------- #
-input_type = "DIRECT"
+input_type = "TERMINAL"
 # --------------------------------------------------------------------------- #
 
 
 # CHOOSE YOUR OUTPUT FORMAT HERE. OPTIONS: TEXT/PNG.
 # --------------------------------------------------------------------------- #
-output_format = "TEXT"
+output_format = "PNG"
 # --------------------------------------------------------------------------- #
 
 
@@ -68,7 +68,7 @@ output_format = "TEXT"
 # SPLASH: only available with PNG format. Opens a temp file with the image.
 # NONE: do nothing with the output. The file will still be saved if you want.
 # --------------------------------------------------------------------------- #
-output_method  = "PRINT"
+output_method  = "SPLASH"
 # --------------------------------------------------------------------------- #
 
 
@@ -82,6 +82,8 @@ save_method = "SINGLE"
 # files are saved to the following directory. Don't forget to add a slash.
 # recommended is to save in a dedicated "diagrams/" folder inside the ThatChord
 # folder.
+# DANGER: SAVING MAY OVERWRITE LOCAL FILES. FILENAMES CONTAIN "THATCHORD" TO
+# AVOID CLASHES WITH UNRELATED FILES.
 save_loc = "diagrams/"
 
 
@@ -141,8 +143,6 @@ from errors import err
 if instrument_preset[-2:] == "-L":
     left = True
     instrument_preset = instrument_preset[0:-2]
-else:
-    left = False
 
 
 # DEFINE INSTRUMENT PRESETS HERE
