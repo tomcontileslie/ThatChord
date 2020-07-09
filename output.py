@@ -19,7 +19,9 @@
 # import error messages
 from errors import err
 
-def text(frets, height = 5, margin = 3, head = "=", string = "|", press = "O", muted = "x"):
+def text(frets_in, height = 5, margin = 3, head = "=", string = "|", press = "O",\
+         muted = "x", output_method = "PRINT", save_method = "NONE",          \
+         save_loc = "diagrams/", name = "noname", left = False):
     """
     CREATES A STRING TO BE PRINTED
     
@@ -39,6 +41,10 @@ def text(frets, height = 5, margin = 3, head = "=", string = "|", press = "O", m
     
     muted is the mark at the top of a muted string.
     """
+    frets = frets_in.copy()
+    if left:
+        frets.reverse()
+        
     # number of strings
     n = len(frets)
     
@@ -88,12 +94,29 @@ def text(frets, height = 5, margin = 3, head = "=", string = "|", press = "O", m
                 out += press + " "
             else:
                 out += string + " "
-        
     
-    return out
+    # only output options are PRINT or NONE. Print if requested.
+    if output_method == "PRINT":
+        print(out)
+    
+    # two possible save methods, if any are supplied.
+    if save_method == "SINGLE":
+        filename = save_loc + "ThatChordTemp.txt"
+    if save_method == "LIBRARY":
+        filename = save_loc + "ThatChord" + name + ".txt"
+        
+    if save_method == "SINGLE" or save_method == "LIBRARY":
+        try:
+            f = open(filename, "w")
+        except FileNotFoundError:
+            err("file not found")
+        f.write(out)
+        f.close()
 
 
-def img(frets, title = "", top = False, height = 5):
+def img(frets_in, title = "", top = False, height = 5, output_method = "SPLASH", \
+        save_method = "NONE", save_loc = "diagrams/", name = "noname",        \
+        left = False):
     """
     CREATES A SMALL PNG IMAGE (each pixel is one bit).
     
@@ -107,6 +130,10 @@ def img(frets, title = "", top = False, height = 5):
     The size of each square in the grid is 20 pixels.
     """
     from PIL import Image, ImageDraw
+    
+    frets = frets_in.copy()
+    if left:
+        frets.reverse()
     
     n = len(frets)
     
@@ -208,5 +235,18 @@ def img(frets, title = "", top = False, height = 5):
     for i in range(n):
         mark(i, fretsn[i])
     
-    # TODO change output depending on settings file
-    img.show()
+    # if output is requested
+    if output_method == "SPLASH":
+        img.show()
+    
+    # two possible save methods, if any are supplied.
+    if save_method == "SINGLE":
+        filename = save_loc + "ThatChordTemp.png"
+    if save_method == "LIBRARY":
+        filename = save_loc + "ThatChord" + name + ".png"
+        
+    if save_method == "SINGLE" or save_method == "LIBRARY":
+        try:
+            img.save(filename)
+        except OSError:
+            err("file not found")
