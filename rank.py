@@ -156,4 +156,16 @@ def rank_bass(frets, chord, tuning, order):
 
 # TODO safeguard against every string muted
     
-rankfuncs = [rank_reach, rank_spread, rank_fingers, rank_pitch, rank_full, rank_mute, rank_structure, rank_bass]
+rankfuncs = [rank_reach,       \
+             rank_spread,      \
+             rank_fingers,     \
+             rank_pitch,       \
+             rank_full,        \
+             rank_mute,        \
+             rank_structure,   \
+             rank_bass]
+
+# define main rank function. "ranks" is list of coeffs.
+def rank(frets, chord, tuning, order, ranks):
+    return sum([ranks[i] * rankfuncs[i](frets, chord, tuning, order) \
+                for i in range(len(rankfuncs))])
