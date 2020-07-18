@@ -35,7 +35,6 @@ import os
 os.chdir("/Users/tomcontileslie/Documents/ThatChord")
 
 
-# TODO custom note-by-note input
 # TODO way to print more chord options
 
 
@@ -60,6 +59,7 @@ import interpret
 import find
 import rank
 import output
+import custom
 
 # First, figure out what the request is.
 if input_type == "CONSOLE":
@@ -73,9 +73,18 @@ if request == "SETTINGS":
     # Typing SETTINGS opens the settings file.
     os.system("open settings.py")
     exit()
-
-# Interpret the request.
-chord = interpret.interpret(request)
+elif request[0:6] == "CUSTOM":
+    # custom note by note input triggered. Code in "custom.py".
+    chord = custom.interpret(request[6:])
+    # title removes CUSTOM but adds exclamation mark to indicate custom.
+    title = "!" + request[6:]
+    filename = request
+else:
+    # Standard input. Use normal function.
+    chord = interpret.interpret(request)
+    # Title and filename of chord (for potential output) is the request string.
+    title = request
+    filename = request
 
 # Find the list of chords.
 options = find.find(chord, tuning, nfrets, nmute, important)
@@ -86,9 +95,9 @@ options.sort(key = lambda x : rank.rank(x, chord, tuning, order, ranks))
 # figure out what the output format is
 if output_format == "TEXT":
     output.text(options[0], height, margin, head, string, press, muted,       \
-                output_method, save_method, save_loc, request, left)
+                output_method, save_method, save_loc, filename, left)
 
 # TODO no options for where to put title yet
 if output_format == "PNG":
-    output.img(options[0], request, True, height, output_method, save_method, \
-               save_loc, request, left)
+    output.img(options[0], title, True, height, output_method, save_method, \
+               save_loc, filename, left)

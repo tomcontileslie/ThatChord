@@ -109,4 +109,12 @@ def err(reason):
             + """specified in settings.py exists."""
         raise ChordError(out)
     
+    # REASON 13: CUSTOM INPUT NOT RECOGNISED
+    if reason == "custom" or reason == 13:
+        out = """Custom input not recongised. To enter a chord note by note"""\
+            + """, type "CUSTOM" followed by a list of notes separated by """ \
+            + """spaces or commas. Notes can be entered as e.g. 'C#', 'G', """\
+            + """'Bb', or as numbers 0-11 (0=C, 1=C#, ...)"""
+        raise ChordError(out)
+    
     raise ChordError(str(reason))
