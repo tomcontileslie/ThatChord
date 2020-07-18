@@ -68,6 +68,12 @@ if input_type == "TERMINAL":
     import sys
     request = sys.argv[1]
 
+# Special inputs here:
+if request == "SETTINGS":
+    # Typing SETTINGS opens the settings file.
+    os.system("open settings.py")
+    exit()
+
 # Interpret the request.
 chord = interpret.interpret(request)
 
