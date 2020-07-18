@@ -31,10 +31,10 @@ request =                        "Gadd9"
 
 
 ############            SET YOUR WORKING DIRECTORY HERE            ############
-#####   recommended: "~/Users/yourusernamehere/Documents/ThatChord"       #####
+#####                 recommended: "~/Documents/ThatChord"                #####
 
 # --------------------------------------------------------------------------- #
-wdir =            "/Users/tomcontileslie/Documents/ThatChord"
+wdir =                     "~/Documents/ThatChord"
 # --------------------------------------------------------------------------- #
 
 
@@ -70,14 +70,12 @@ wdir =            "/Users/tomcontileslie/Documents/ThatChord"
 
 # DO NOT CHANGE THE FOLLOWING CODE. THIS IS WHERE THE MAGIC HAPPENS.
 
+# change current directory
+import os
+os.chdir(os.path.expanduser(wdir))
+
 # Load settings
 exec(open("settings.py").read())
-
-# Only set working directory if output format requires saving (better for
-# non-Mac users)
-if save_method in ["SINGLE, LIBRARY"]:
-    import os
-    os.chdir(wdir)
 
 # Load other files
 import interpret
