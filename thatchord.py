@@ -30,9 +30,30 @@ request =                        "Gadd9"
 # --------------------------------------------------------------------------- #
 
 
-# SET YOUR WORKING DIRECTORY HERE (recommended: "~/Documents/ThatChord")
-import os
-os.chdir("/Users/tomcontileslie/Documents/ThatChord")
+############            SET YOUR WORKING DIRECTORY HERE            ############
+#####   recommended: "~/Users/yourusernamehere/Documents/ThatChord"       #####
+
+# --------------------------------------------------------------------------- #
+wdir =            "/Users/tomcontileslie/Documents/ThatChord"
+# --------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -51,6 +72,12 @@ os.chdir("/Users/tomcontileslie/Documents/ThatChord")
 
 # Load settings
 exec(open("settings.py").read())
+
+# Only set working directory if output format requires saving (better for
+# non-Mac users)
+if save_method in ["SINGLE, LIBRARY"]:
+    import os
+    os.chdir(wdir)
 
 # Load other files
 import interpret
