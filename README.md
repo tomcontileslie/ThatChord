@@ -39,19 +39,9 @@ These weigh a handful of kilobytes each at most.
 ## Using ThatChord
 
 You can either run ThatChord manually in your favourite Python interpreter, or fiddle with the setup once and then automate the script via the command line.
-In both cases, you'll first need to have Python3 installed: if you have [Homebrew](https://brew.sh/#install), then simply type this in the command line:
-```
-brew install python
-```
-Now pick a suitable folder in which to clone the ThatChord folder. Your home directory is probably a good idea. Execute:
-```
-git clone https://github.com/tomcontileslie/ThatChord.git ThatChord
-```
-Now, any updates can be retrieved by typing the following in the command line, once in the ThatChord directory:
-```
-git pull origin master
-```
-TODO: MORE INFORMATION ON AUTOMATION TO APPEAR HERE
+
+More information on both of these options, including a step-by-step setup guide for beginners, is available
+on the [ThatChord wiki](https://github.com/tomcontileslie/ThatChord/wiki).
 
 ## Contributing to ThatChord
 
