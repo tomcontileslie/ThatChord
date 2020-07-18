@@ -465,19 +465,19 @@ python3 ~/Documents/ThatChord/thatchord.py $1</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>23F3A0FB-F576-4E35-88A6-3E8AA31188E8</key>
-		<dict>
-			<key>from</key>
-			<string>B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD - B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD</string>
-			<key>to</key>
-			<string>E3733A90-E380-4673-8EF8-E91EAC17ED8F - E3733A90-E380-4673-8EF8-E91EAC17ED8F</string>
-		</dict>
-		<key>72E5BD5E-F988-43E3-9F21-017D63331E2C</key>
+		<key>0C24EB05-E103-4ACB-9295-76662F9A0D13</key>
 		<dict>
 			<key>from</key>
 			<string>2ED4E68D-A8A5-4812-ABAD-C701AC0DD53A - 2ED4E68D-A8A5-4812-ABAD-C701AC0DD53A</string>
 			<key>to</key>
 			<string>B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD - B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD</string>
+		</dict>
+		<key>56CC582F-952E-4F0E-AFE3-F6B36B47C13F</key>
+		<dict>
+			<key>from</key>
+			<string>B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD - B8D5C010-1F6F-4227-8C2E-0B1794A0B1DD</string>
+			<key>to</key>
+			<string>E3733A90-E380-4673-8EF8-E91EAC17ED8F - E3733A90-E380-4673-8EF8-E91EAC17ED8F</string>
 		</dict>
 	</dict>
 	<key>variables</key>
