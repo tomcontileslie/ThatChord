@@ -35,8 +35,6 @@ import os
 os.chdir("/Users/tomcontileslie/Documents/ThatChord")
 
 
-# TODO way to print more chord options
-
 
 
 
@@ -73,7 +71,25 @@ if request == "SETTINGS":
     # Typing SETTINGS opens the settings file.
     os.system("open settings.py")
     exit()
-elif request[0:6] == "CUSTOM":
+
+# Check whether a specific position in the list was requested. If not, 0 is
+# default.
+listpos = 0
+
+if ":" in request:
+    colon_positions = [i for i, x in enumerate(request) if x == ":"]
+    if len(colon_positions) > 1:
+        err("colons")
+    # if we made it here then there must be exactly one colon
+    try:
+        listpos = int(request[colon_positions[0] + 1:]) - 1
+    except ValueError:
+        err(15)
+    # remove the colon bit from the request
+    request = request[:colon_positions[0]]
+    
+
+if request[0:6] == "CUSTOM":
     # custom note by note input triggered. Code in "custom.py".
     chord = custom.interpret(request[6:])
     # title removes CUSTOM but adds exclamation mark to indicate custom.
@@ -92,12 +108,16 @@ options = find.find(chord, tuning, nfrets, nmute, important)
 # Sort the options using rank
 options.sort(key = lambda x : rank.rank(x, chord, tuning, order, ranks))
 
+# Check the requested option is not too big
+if listpos >= len(options):
+    err(16)
+
 # figure out what the output format is
 if output_format == "TEXT":
-    output.text(options[0], height, margin, head, string, press, muted,       \
+    output.text(options[listpos], height, margin, head, string, press, muted, \
                 output_method, save_method, save_loc, filename, left)
 
 # TODO no options for where to put title yet
 if output_format == "PNG":
-    output.img(options[0], title, True, height, output_method, save_method, \
-               save_loc, filename, left)
+    output.img(options[listpos], title, True, height, output_method,
+               save_method, save_loc, filename, left)

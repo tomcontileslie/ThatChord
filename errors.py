@@ -117,4 +117,28 @@ def err(reason):
             + """'Bb', or as numbers 0-11 (0=C, 1=C#, ...)"""
         raise ChordError(out)
     
+    # REASON 14: TOO MANY COLONS IN INPUT
+    if reason == "colons" or reason == 14:
+        out = """There are too many colons in your input. Adding a ":" at """ \
+            + """the end of your chord request requests a specific index of"""\
+            + """ chord in the list of possibilities. There must be at most"""\
+            + """ one colon in the input."""
+        raise ChordError(out)
+    
+    # REASON 15: CANNOT UNDERSTAND LIST INDEX REQUESTED
+    if reason == "aftercolon" or reason == 15:
+        out = """You have requested a specific index of chord in the list """ \
+            + """of possibilities by using a colon but I don't understand """ \
+            + """what index this is. Please follow a colon simply by a """    \
+            + """number, e.g. 'Cmaj7:2' if you want to see the second best """\
+            + """match for Cmaj7."""
+        raise ChordError(out)
+    
+    # REASON 16: LIST INDEX REQUESTED TOO HIGH
+    if reason == "fewoptions" or reason == 16:
+        out = """You have requested a solution number which is greater than"""\
+            + """ the number of solutions found. Please request a lower """   \
+            + """index after the colon."""
+        raise ChordError(out)
+    
     raise ChordError(str(reason))
