@@ -50,7 +50,7 @@ def err(reason):
             + """displayed was too long compared to the default margin size"""\
             + """. Ensure ThatChord is not printing chords absurdly high """  \
             + """on the fretboard, and that the margin is defined to be """   \
-            + """suitably large (ideally 3 or more)."""
+            + """suitably large (ideally 3 or more; at least 1)."""
         raise ChordError(out)
     
     # REASON 5: TOO FEW FRETS FOR ANY POSSIBILITIES
