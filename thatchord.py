@@ -142,6 +142,7 @@ if output_format == "TEXT":
     output.text(
             options[listpos],
             name = filename,
+            title = title,
             **kwgrargs,
             **kwioargs
             )

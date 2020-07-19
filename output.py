@@ -24,6 +24,7 @@ def text(
          
          # filename to save under
          name = "noname",
+         title = "",
          
          # graphical parameters, will be passed as **kwgrargs
          height = 5,
@@ -68,6 +69,12 @@ def text(
     # number of strings
     n = len(frets)
     
+    # at the very top, print the title, provided top is True.
+    if top:
+        out = " " * margin + title + "\n"
+    else:
+        out = ""
+    
     # first, determine whether to print the header.
     # lo is the lowest fret printed.
     if max(frets) <= 5 or min([i for i in frets if i != 0 and i != -1]) < 3:
@@ -82,7 +89,7 @@ def text(
     hi = max(lo + height - 1, max(frets))
     
     # initialise output string.
-    out = " " * margin
+    out += " " * margin
     
     # there is an empty line at the top with x's if any strings are not played
     for i in frets:
@@ -114,6 +121,10 @@ def text(
                 out += press + " "
             else:
                 out += string + " "
+    
+    # Print the title here if top is False.
+    if not top:
+        out += "\n\n" + " " * margin + title
     
     # Print if requested.
     if output_method == "PRINT":
