@@ -24,7 +24,7 @@
 # CHOOSE YOUR INSTRUMENT HERE, OR SET TO THE EMPTY STRING TO USE SETTINGS
 # UNDERNEATH.
 # --------------------------------------------------------------------------- #
-instrument_preset = "UKULELE"
+instrument_preset = "UKULELEX"
 # --------------------------------------------------------------------------- #
 
 # If the preset is unrecognised, the following values are used.
@@ -35,6 +35,14 @@ nmute     = 0
 important = 4
 order     = [2, 0, 1, 3]
 left      = False
+
+tuning       = [7, 2, 7, 11, 2]
+nfrets       = 15
+nmute        = 2
+important    = 5
+order        = [4, 0, 1, 2, 3]
+left         = False
+stringstarts = [4, 0, 0, 0, 0]
 
 
 # CHOOSE YOUR RANKING COEFFICIENT PRESET HERE, OR SET TO EMPTY TO USE SETTINGS
@@ -269,16 +277,21 @@ if not save_method in ["SINGLE", "LIBRARY", "NONE"]:
 if output_method == "PRINT" and not output_format == "TEXT":
     err("incompatible output")
 
+# CHANGE TUNING TO IMAGINED NECK, FOR STRINGS STARTING HIGHER THAN 0TH FRET
+for i in range(len(tuning)):
+    tuning[i] = (tuning[i] - stringstarts[i]) % 12
+
 # MAKE GRAPHICAL PARAMETERS DICTIONARY
 kwgrargs = {
-        "height" : height,
-        "margin" : margin,
-        "head"   : head,
-        "string" : string,
-        "press"  : press,
-        "muted"  : muted,
-        "left"   : left,
-        "top"    : top,
+        "height"       : height,
+        "margin"       : margin,
+        "head"         : head,
+        "string"       : string,
+        "press"        : press,
+        "muted"        : muted,
+        "left"         : left,
+        "top"          : top,
+        "stringstarts" : stringstarts,
         }
 
 # MAKE INPUT/OUTPUT PARAMETERS DICTIONARY
