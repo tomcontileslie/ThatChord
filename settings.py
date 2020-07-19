@@ -65,7 +65,7 @@ output_format = "PNG"
 
 # CHOOSE YOUR OUTPUT METHOD HERE. OPTIONS:
 # PRINT: only available with TEXT format. Prints to console.
-# SPLASH: only available with PNG format. Opens a temp file with the image.
+# SPLASH: Opens a temp file with the image.
 # NONE: do nothing with the output. The file will still be saved if you want.
 # --------------------------------------------------------------------------- #
 output_method  = "SPLASH"
@@ -267,9 +267,6 @@ if not save_method in ["SINGLE", "LIBRARY", "NONE"]:
     err("save method")
 
 if output_method == "PRINT" and not output_format == "TEXT":
-    err("incompatible output")
-    
-if output_method == "SPLASH" and not output_format == "PNG":
     err("incompatible output")
 
 # MAKE GRAPHICAL PARAMETERS DICTIONARY

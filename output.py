@@ -115,7 +115,7 @@ def text(
             else:
                 out += string + " "
     
-    # only output options are PRINT or NONE. Print if requested.
+    # Print if requested.
     if output_method == "PRINT":
         print(out)
     
@@ -132,6 +132,11 @@ def text(
             err("file not found")
         f.write(out)
         f.close()
+    
+    # If asked to splash, do so now that the file is saved.
+    if output_method == "SPLASH":
+        import os
+        os.system("open " + filename)
 
 
 def img(
