@@ -35,6 +35,7 @@ def text(
          muted = "x",
          left = False,
          top = True,
+         stringstarts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # for all nstrings
          
          # input/output arguments, will be passed as **kwioargs
          output_method = "PRINT",
@@ -77,7 +78,7 @@ def text(
     
     # first, determine whether to print the header.
     # lo is the lowest fret printed.
-    if max(frets) <= 5 or min([i for i in frets if i != 0 and i != -1]) < 3:
+    if max(frets) <= height or min([i for i in frets if i != 0 and i != -1]) < 3:
         header = True
         lo     = 1
     else:
@@ -92,15 +93,38 @@ def text(
     out += " " * margin
     
     # there is an empty line at the top with x's if any strings are not played
-    for i in frets:
-        if i == -1:
+    # xs also if the requested fret is below the start of the string
+    # e.g. banjo
+    for i in range(len(frets)):
+        if frets[i] < stringstarts[i]: # i.e. either -1 or banjo situation
             out += muted + " "
         else:
             out += "  "
     
-    # draw header if needed.
-    if header:
-        out += "\n" + " " * margin + head * (2 * n - 1)
+    # draw header if needed. only draw above strings that start at 0.
+    if header:        
+        # we need to have some free space in the margin.
+        if not margin >= 1:
+            err("fermat")
+        
+        out += "\n" + " " * (margin - 1)
+        
+        # now print headers where needed. They link up if the prev string also
+        # had a header.
+        curr = False
+        for i in range(len(frets)):
+            # shuffle along the neck.
+            last, curr = curr, stringstarts[i] == 0
+            if curr:
+                if last:
+                    # link up this string with previous
+                    out += head * 2
+                else:
+                    # previous string had no head, just draw head over current
+                    out += " " + head
+            else:
+                # no header necessary, current string does not go to top
+                out += "  "
     
     # start drawing the frets. There is a special case for the lowest one if
     # no header is displayed, since we'll need to indicate what fret we're on.
@@ -116,11 +140,18 @@ def text(
             # in this case the line has nothing special
             out += " " * margin
         
-        for i in frets:
-            if i == line:
-                out += press + " "
+        # draw pressed notes and strings, checking whether we are below the
+        # start of the string each time (e.g. banjo).
+        for i in range(len(frets)):
+            if stringstarts[i] < line:
+                if frets[i] == line:
+                    out += press + " "
+                else:
+                    out += string + " "
             else:
-                out += string + " "
+                # in this case we're below the start of the string.
+                # print nothing.
+                out += "  "
     
     # Print the title here if top is False.
     if not top:

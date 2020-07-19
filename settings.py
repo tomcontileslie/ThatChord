@@ -24,25 +24,18 @@
 # CHOOSE YOUR INSTRUMENT HERE, OR SET TO THE EMPTY STRING TO USE SETTINGS
 # UNDERNEATH.
 # --------------------------------------------------------------------------- #
-instrument_preset = "UKULELEX"
+instrument_preset = "UKULELE"
 # --------------------------------------------------------------------------- #
 
 # If the preset is unrecognised, the following values are used.
 # See find.py to see what they do.
-tuning    = [7, 0, 4, 9]
-nfrets    = 12
-nmute     = 0
-important = 4
-order     = [2, 0, 1, 3]
-left      = False
-
-tuning       = [7, 2, 7, 11, 2]
-nfrets       = 15
-nmute        = 2
-important    = 5
-order        = [4, 0, 1, 2, 3]
+tuning       = [7, 0, 4, 9]
+nfrets       = 12
+nmute        = 0
+important    = 4
+order        = [2, 0, 1, 3]
 left         = False
-stringstarts = [4, 0, 0, 0, 0]
+stringstarts = [0, 0, 0, 0]
 
 
 # CHOOSE YOUR RANKING COEFFICIENT PRESET HERE, OR SET TO EMPTY TO USE SETTINGS
@@ -162,6 +155,7 @@ if instrument_preset in ["UKULELE", "UKULELE-SOPRANO", "UKULELE-REENTRANT",   \
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-D", "UKULELE-SOPRANO-D",                    \
                          "UKULELE-D-REENTRANT", "UKULELE-SOPRANO-D-REENTRANT"]:
@@ -171,6 +165,7 @@ if instrument_preset in ["UKULELE-D", "UKULELE-SOPRANO-D",                    \
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-CONCERT", "UKULELE-CONCERT-REENTRANT"]:
     tuning    = [7, 0, 4, 9]
@@ -178,6 +173,7 @@ if instrument_preset in ["UKULELE-CONCERT", "UKULELE-CONCERT-REENTRANT"]:
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-CONCERT-LINEAR"]:
     tuning    = [7, 0, 4, 9]
@@ -185,6 +181,7 @@ if instrument_preset in ["UKULELE-CONCERT-LINEAR"]:
     nmute     = 0
     important = 4
     order     = [0, 1, 2, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-TENOR", "UKULELE-TENOR-REENTRANT"]:
     tuning    = [7, 0, 4, 9]
@@ -192,6 +189,7 @@ if instrument_preset in ["UKULELE-TENOR", "UKULELE-TENOR-REENTRANT"]:
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-TENOR-LINEAR"]:
     tuning    = [7, 0, 4, 9]
@@ -199,6 +197,7 @@ if instrument_preset in ["UKULELE-TENOR-LINEAR"]:
     nmute     = 0
     important = 4
     order     = [0, 1, 2, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-TENOR-CHICAGO",                             \
                          "UKULELE-TENOR-CHICAGO-REENTRANT"]:
@@ -207,6 +206,7 @@ if instrument_preset in ["UKULELE-TENOR-CHICAGO",                             \
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-TENOR-CHICAGO-LINEAR"]:
     tuning    = [2, 7, 11, 4]
@@ -214,6 +214,7 @@ if instrument_preset in ["UKULELE-TENOR-CHICAGO-LINEAR"]:
     nmute     = 0
     important = 4
     order     = [0, 1, 2, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-BARITONE", "UKULELE-BARITONE-REENTRANT"]:
     tuning    = [7, 0, 4, 9]
@@ -221,6 +222,7 @@ if instrument_preset in ["UKULELE-BARITONE", "UKULELE-BARITONE-REENTRANT"]:
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-BARITONE-LINEAR"]:
     tuning    = [7, 0, 4, 9]
@@ -228,6 +230,7 @@ if instrument_preset in ["UKULELE-BARITONE-LINEAR"]:
     nmute     = 0
     important = 4
     order     = [0, 1, 2, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-BARITONE-CHICAGO",                          \
                          "UKULELE-BARITONE-CHICAGO-REENTRANT"]:
@@ -236,6 +239,7 @@ if instrument_preset in ["UKULELE-BARITONE-CHICAGO",                          \
     nmute     = 0
     important = 4
     order     = [2, 0, 1, 3]
+    stringstarts = [0, 0, 0, 0]
 
 if instrument_preset in ["UKULELE-BARITONE-CHICAGO-LINEAR"]:
     tuning    = [2, 7, 11, 4]
@@ -243,6 +247,7 @@ if instrument_preset in ["UKULELE-BARITONE-CHICAGO-LINEAR"]:
     nmute     = 0
     important = 4
     order     = [0, 1, 2, 3]
+    stringstarts = [0, 0, 0, 0]
 
 
 if instrument_preset in ["GUITAR"]:
@@ -251,6 +256,15 @@ if instrument_preset in ["GUITAR"]:
     nmute     = 2
     important = 6
     order     = [0, 1, 2, 3, 4, 5]
+    stringstarts = [0, 0, 0, 0]
+
+if instrument_preset in ["BANJO"]:
+    tuning       = [7, 2, 7, 11, 2]
+    nfrets       = 15
+    nmute        = 2
+    important    = 5
+    order        = [4, 0, 1, 2, 3]
+    stringstarts = [4, 0, 0, 0, 0]
     
 
 # DEFINE RANKING PRESETS HERE
