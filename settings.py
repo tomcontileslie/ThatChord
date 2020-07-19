@@ -95,6 +95,7 @@ head   = "="
 string = "|"
 press  = "O"
 muted  = "x"
+top = True
 
 
 
@@ -270,3 +271,22 @@ if output_method == "PRINT" and not output_format == "TEXT":
     
 if output_method == "SPLASH" and not output_format == "PNG":
     err("incompatible output")
+
+# MAKE GRAPHICAL PARAMETERS DICTIONARY
+kwgrargs = {
+        "height" : height,
+        "margin" : margin,
+        "head"   : head,
+        "string" : string,
+        "press"  : press,
+        "muted"  : muted,
+        "left"   : left,
+        "top"    : top,
+        }
+
+# MAKE INPUT/OUTPUT PARAMETERS DICTIONARY
+kwioargs = {
+        "output_method" : output_method,
+        "save_method"   : save_method,
+        "save_loc"      : save_loc
+        }

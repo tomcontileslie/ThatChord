@@ -139,10 +139,19 @@ if listpos >= len(options):
 
 # figure out what the output format is
 if output_format == "TEXT":
-    output.text(options[listpos], height, margin, head, string, press, muted, \
-                output_method, save_method, save_loc, filename, left)
+    output.text(
+            options[listpos],
+            name = filename,
+            **kwgrargs,
+            **kwioargs
+            )
 
 # TODO no options for where to put title yet
 if output_format == "PNG":
-    output.img(options[listpos], title, True, height, output_method,
-               save_method, save_loc, filename, left)
+    output.img(
+            options[listpos],
+            name = filename,
+            title = title,
+            **kwgrargs,
+            **kwioargs
+            )

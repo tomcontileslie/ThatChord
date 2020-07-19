@@ -19,9 +19,28 @@
 # import error messages
 from errors import err
 
-def text(frets_in, height = 5, margin = 3, head = "=", string = "|", press = "O",\
-         muted = "x", output_method = "PRINT", save_method = "NONE",          \
-         save_loc = "diagrams/", name = "noname", left = False):
+def text(
+         frets_in,
+         
+         # filename to save under
+         name = "noname",
+         
+         # graphical parameters, will be passed as **kwgrargs
+         height = 5,
+         margin = 3,
+         head = "=",
+         string = "|",
+         press = "O",
+         muted = "x",
+         left = False,
+         top = True,
+         
+         # input/output arguments, will be passed as **kwioargs
+         output_method = "PRINT",
+         save_method = "NONE",
+         save_loc = "diagrams/",
+        ):
+    
     """
     CREATES A STRING TO BE PRINTED
     
@@ -41,6 +60,7 @@ def text(frets_in, height = 5, margin = 3, head = "=", string = "|", press = "O"
     
     muted is the mark at the top of a muted string.
     """
+    
     frets = frets_in.copy()
     if left:
         frets.reverse()
@@ -114,9 +134,30 @@ def text(frets_in, height = 5, margin = 3, head = "=", string = "|", press = "O"
         f.close()
 
 
-def img(frets_in, title = "", top = False, height = 5, output_method = "SPLASH", \
-        save_method = "NONE", save_loc = "diagrams/", name = "noname",        \
-        left = False):
+def img(
+        frets_in,
+        
+        # filename to save under if necessary
+        name = "noname",
+        # header to print on actual image
+        title = "",
+        
+        # graphical parameters: not all used, need to be same as for text.
+        # will be passed as **kwgrargs.
+        height = 5,
+        margin = 3,
+        head = "=",
+        string = "|",
+        press = "O",
+        muted = "x",
+        left = False,
+        top = True,
+        
+        # input/output arguments, will be passed as **kwioargs
+        output_method = "SPLASH",
+        save_method = "NONE",
+        save_loc = "diagrams/",
+        ):
     """
     CREATES A SMALL PNG IMAGE (each pixel is one bit).
     
