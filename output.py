@@ -102,7 +102,7 @@ def text(
             out += "  "
     
     # draw header if needed. only draw above strings that start at 0.
-    if header:        
+    if header:
         # we need to have some free space in the margin.
         if not margin >= 1:
             err("fermat")
@@ -199,6 +199,7 @@ def img(
         muted = "x",
         left = False,
         top = True,
+        stringstarts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # for big nstrings
         
         # input/output arguments, will be passed as **kwioargs
         output_method = "SPLASH",
