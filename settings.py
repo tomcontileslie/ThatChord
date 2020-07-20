@@ -45,7 +45,7 @@ ranking_preset = "UKULELE"
 # --------------------------------------------------------------------------- #
 
 # If the preset is unrecognised, the following coefficients are used.
-ranks = [1, 2, 3, 1, 0, 0, 0, 0]
+ranks = [1, 2, 3, 1, 0, 0, 0, 0, 0]
 
 
 # CHOOSE YOUR INPUT MODE HERE. OPTIONS: DIRECT/TERMINAL/CONSOLE.
@@ -249,30 +249,41 @@ if instrument_preset in ["UKULELE-BARITONE-CHICAGO-LINEAR"]:
     order     = [0, 1, 2, 3]
     stringstarts = [0, 0, 0, 0]
 
-
 if instrument_preset in ["GUITAR"]:
     tuning    = [4, 9, 2, 7, 11, 4]
     nfrets    = 19
     nmute     = 2
     important = 6
     order     = [0, 1, 2, 3, 4, 5]
-    stringstarts = [0, 0, 0, 0]
+    stringstarts = [0, 0, 0, 0, 0, 0]
 
 if instrument_preset in ["BANJO"]:
     tuning       = [7, 2, 7, 11, 2]
     nfrets       = 15
-    nmute        = 2
-    important    = 5
+    nmute        = 1
+    important    = 3 # usually not playing complex chords
     order        = [4, 0, 1, 2, 3]
-    stringstarts = [4, 0, 0, 0, 0]
+    stringstarts = [5, 0, 0, 0, 0]
+    height       = 6 # so that there's space for the additional string
+    
+if instrument_preset in ["SAZ"]:
+    tuning       = [2, 7, 9]
+    nfrets       = 14
+    nmute        = 0
+    important    = 3
+    order        = [2, 0, 1]
+    stringstarts = [0, 0, 0]
     
 
 # DEFINE RANKING PRESETS HERE
 if ranking_preset in ["UKULELE"]:
-    ranks = [1, 2, 3, 1, 0, 0, 0, 0]
+    ranks = [1, 2, 3, 1, 0, 0, 0, 0, 0]
 
 if ranking_preset in ["GUITAR"]:
-    ranks = [3, 0, 3, 1, 5, 2, 5, 8]
+    ranks = [3, 0, 3, 1, 0, 5, 2, 5, 8]
+
+if ranking_preset in ["BANJO"]:
+    ranks = [2, 1, 3, 0, 1, 0, 3, 2, 1]
 
 
 # SENSE CHECKING FOR I/O FORMATS
