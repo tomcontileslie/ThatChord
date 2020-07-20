@@ -35,6 +35,7 @@ def text(
          muted = "x",
          left = False,
          top = True,
+         stringstarts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # for all nstrings
          
          # input/output arguments, will be passed as **kwioargs
          output_method = "PRINT",
@@ -77,7 +78,7 @@ def text(
     
     # first, determine whether to print the header.
     # lo is the lowest fret printed.
-    if max(frets) <= 5 or min([i for i in frets if i != 0 and i != -1]) < 3:
+    if max(frets) <= height or min([i for i in frets if i != 0 and i != -1]) < 3:
         header = True
         lo     = 1
     else:
@@ -92,15 +93,38 @@ def text(
     out += " " * margin
     
     # there is an empty line at the top with x's if any strings are not played
-    for i in frets:
-        if i == -1:
+    # xs also if the requested fret is below the start of the string
+    # e.g. banjo
+    for i in range(len(frets)):
+        if frets[i] < stringstarts[i]: # i.e. either -1 or banjo situation
             out += muted + " "
         else:
             out += "  "
     
-    # draw header if needed.
+    # draw header if needed. only draw above strings that start at 0.
     if header:
-        out += "\n" + " " * margin + head * (2 * n - 1)
+        # we need to have some free space in the margin.
+        if not margin >= 1:
+            err("fermat")
+        
+        out += "\n" + " " * (margin - 1)
+        
+        # now print headers where needed. They link up if the prev string also
+        # had a header.
+        curr = False
+        for i in range(len(frets)):
+            # shuffle along the neck.
+            last, curr = curr, stringstarts[i] == 0
+            if curr:
+                if last:
+                    # link up this string with previous
+                    out += head * 2
+                else:
+                    # previous string had no head, just draw head over current
+                    out += " " + head
+            else:
+                # no header necessary, current string does not go to top
+                out += "  "
     
     # start drawing the frets. There is a special case for the lowest one if
     # no header is displayed, since we'll need to indicate what fret we're on.
@@ -116,11 +140,18 @@ def text(
             # in this case the line has nothing special
             out += " " * margin
         
-        for i in frets:
-            if i == line:
-                out += press + " "
+        # draw pressed notes and strings, checking whether we are below the
+        # start of the string each time (e.g. banjo).
+        for i in range(len(frets)):
+            if stringstarts[i] < line:
+                if frets[i] == line:
+                    out += press + " "
+                else:
+                    out += string + " "
             else:
-                out += string + " "
+                # in this case we're below the start of the string.
+                # print nothing.
+                out += "  "
     
     # Print the title here if top is False.
     if not top:
@@ -168,6 +199,7 @@ def img(
         muted = "x",
         left = False,
         top = True,
+        stringstarts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # for big nstrings
         
         # input/output arguments, will be passed as **kwioargs
         output_method = "SPLASH",
@@ -196,7 +228,7 @@ def img(
     
     # first, determine whether to print the header.
     # lo is the lowest fret printed.
-    if max(frets) <= 5 or min([i for i in frets if i != 0 and i != -1]) < 3:
+    if max(frets) <= height or min([i for i in frets if i != 0 and i != -1]) < 3:
         header = True
         lo     = 1
     else:
@@ -220,10 +252,28 @@ def img(
     img = Image.new("1", (wid, hgh), color = "white")
     drw = ImageDraw.Draw(img)
     
-    # draw header if needed
+    # draw header if needed. If we have banjo-style strings we can chop
+    # off either side of the header.
     if header:
-        h1 = (20, 19 + b)
-        h2 = (n * 20, 19 + b)
+        leftchop, rightchop   = 0, 0
+        leftcheck, rightcheck = True, True
+        i = 0
+        while (leftcheck or rightcheck) and i < n:
+            if stringstarts[i] > 0 and leftcheck:
+                leftchop += 1
+            else:
+                leftcheck = False
+            if stringstarts[n - i - 1] > 0 and rightcheck:
+                rightchop += 1
+            else:
+                rightcheck = False
+            i += 1
+        
+        # leftchop and rightchop should now have values defining how many
+        # strings off either side are missing at the neck.
+        # strings missing in the middle are not supported currently.
+        h1 = ((leftchop + 1) * 20, 19 + b)
+        h2 = ((n - rightchop) * 20, 19 + b)
         drw.line([h1, h2], width = 3)
     # otherwise, need a fret number
     else:
@@ -232,16 +282,42 @@ def img(
         fy = 25 + b
         drw.text((fx, fy), str(lo))
     
-    # Draw vertical lines
+    # Draw vertical lines. Start at stringstart and go all the way to h.
+    # if, somehow, the string starts higher than the part drawn, then don't
+    # draw at all.
     for i in range(n):
-        l1 = ((i + 1) * 20, 20 + b)
-        l2 = ((i + 1) * 20, (h + 1) * 20 + b)
-        drw.line([l1, l2], width = 1)
+        stringlo = stringstarts[i] - lo + 1
+        # only draw if starts in range
+        if stringlo < lo + h:
+            if stringlo < 0:
+                # then we start at 0, do not draw earlier
+                stringlo = 0
+            l1 = ((i + 1) * 20, (stringlo + 1) * 20 + b)
+            l2 = ((i + 1) * 20, (h + 1) * 20 + b)
+            drw.line([l1, l2], width = 1)
 
-    # Draw horizontal lines
+    # Draw horizontal lines. As for the header, at each horizontal step we
+    # chop off left and right.
     for i in range(h + 1):
-        l1 = (20, (i + 1) * 20 + b)
-        l2 = (n * 20, (i + 1) * 20 + b)
+        # calculate the corresponding fret, e.g. if i = 1 and lo = 3 we are
+        # on fret 4.
+        fret = i + lo
+        leftchop, rightchop   = 0, 0
+        leftcheck, rightcheck = True, True
+        j = 0
+        while (leftcheck or rightcheck) and j < n:
+            if stringstarts[j] > fret - 1 and leftcheck:
+                leftchop += 1
+            else:
+                leftcheck = False
+            if stringstarts[n - j - 1] > fret - 1 and rightcheck:
+                rightchop += 1
+            else:
+                rightcheck = False
+            j += 1
+        
+        l1 = ((leftchop + 1) * 20, (i + 1) * 20 + b)
+        l2 = ((n - rightchop) * 20, (i + 1) * 20 + b)
         drw.line([l1, l2], width = 1)
 
     # make a function for circles and crosses
@@ -277,16 +353,16 @@ def img(
         drw.text((tx, ty), title)
     
     # the one thing we need to do before adding marks is shift everything
-    # if there is no header.
-    if not header:
-        fretsn = []
-        for note in frets:
-            if not (note == 0 or note == -1):
-                fretsn.append(note - lo + 1)
-            else:
-                fretsn.append(note)
-    else:
-        fretsn = frets
+    # so that frets too low on the short banjo string are muted, empty strings
+    # are correct, and also so that everything shifts if there is no header.
+    fretsn = []
+    for i in range(n):
+        if frets[i] < stringstarts[i]:
+            fretsn.append(-1)
+        elif frets[i] == stringstarts[i]:
+            fretsn.append(0)
+        else:
+            fretsn.append(frets[i] - lo + 1)
     
     # now add marks
     for i in range(n):

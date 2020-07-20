@@ -20,43 +20,70 @@
 # import error messages
 from errors import err
 
-def rank_reach(frets, chord, tuning, order):
+# define the pressed helper function since it is used in several ranking funcs
+def helper_pressed(frets, stringstarts):
+    """
+    returns a list of the frets that are pressed down.
+    """
+    out = []
+    for i in range(len(frets)):
+        # a string is pressed if it is not muted or open
+        if not frets[i] <= stringstarts[i]:
+            out.append(frets[i])
+    return out
+
+def helper_played(frets, stringstarts):
+    """
+    returns a list of frets that are played (not muted).
+    """
+    out = []
+    for i in range(len(frets)):
+        if not frets[i] < stringstarts[i]:
+            out.append(frets[i])
+    return out
+
+def rank_reach(frets, chord, tuning, order, stringstarts):
     """
     Returns the distance between the highest and lowest fret that needs
     to be pressed when playing the chord
     """
-    pressed = [i for i in frets if i != 0 and i != -1]
+    pressed = helper_pressed(frets, stringstarts)
     if len(pressed) == 0:
         return 0
     else:
         return (max(pressed) - min(pressed))
 
-def rank_spread(frets, chord, tuning, order):
+def rank_spread(frets, chord, tuning, order, stringstarts):
     """
     Similar to reach, but includes empty strings as well, in order to measure
     how 'spread out' the chord sounds.
     """
-    played = [i for i in frets if i != -1]
+    played = helper_played(frets, stringstarts)
     if len(played) == 0:
         return 0
     else:
         return max(played) - min(played)
 
-def rank_fingers(frets, chord, tuning, order):
+def rank_fingers(frets, chord, tuning, order, stringstarts):
     """
     Returns the 'number of figners needed to play the chord', i.e. number
     of strings that are pressed.
     """
-    pressed = [i for i in frets if i != 0 and i != -1]
-    return len(pressed)
+    return len(helper_played(frets, stringstarts))
 
-def rank_pitch(frets, chord, tuning, order):
+def rank_pitch_hi(frets, chord, tuning, order, stringstarts):
     """
     This function prefers chords which are played lower on the fretboard.
     """
     return max(frets)
 
-def rank_full(frets, chord, tuning, order):
+def rank_pitch_lo(frets, chord, tuning, order, stringstarts):
+    """
+    This function prefers chords which are played lower on the fretboard.
+    """
+    return min(helper_played(frets, stringstarts))
+
+def rank_full(frets, chord, tuning, order, stringstarts):
     """
     Assesses how many notes from the chord were hit.
     Only returns meaningful input if variable 'important' is set low.
@@ -71,17 +98,17 @@ def rank_full(frets, chord, tuning, order):
     
     return len(set(chord) - set(notes))
 
-def rank_mute(frets, chord, tuning, order):
+def rank_mute(frets, chord, tuning, order, stringstarts):
     """
     Disadvantages chords with muted strings.
     """
     count = 1
-    for i in frets:
-        if i == -1:
+    for i in range(len(frets)):
+        if frets[i] < stringstarts[i]:
             count *= 2
     return count - 1
 
-def rank_structure(frets, chord, tuning, order):
+def rank_structure(frets, chord, tuning, order, stringstarts):
     """
     Assesses how well important notes in the chord have been placed on the
     low strings.
@@ -91,7 +118,7 @@ def rank_structure(frets, chord, tuning, order):
     # first make a list of notes played, with -1 still meaning mute.
     notes = []
     for i in range(n):
-        if frets[i] == -1:
+        if frets[i] < stringstarts[i]:
             notes.append(-1)
         else:
             notes.append((tuning[i] + frets[i]) % 12)
@@ -126,7 +153,7 @@ def rank_structure(frets, chord, tuning, order):
     # normalise by the number of non-muted strings
     return out / (len(frets) - m)
 
-def rank_bass(frets, chord, tuning, order):
+def rank_bass(frets, chord, tuning, order, stringstarts):
     """
     Penalises chords where the note played on the lowest string is not the bass
     """
@@ -136,7 +163,7 @@ def rank_bass(frets, chord, tuning, order):
     bignum = max(order) + 1
     ordernew = []
     for i in range(n):
-        if frets[i] == -1:
+        if frets[i] < stringstarts[i]:
             ordernew.append(bignum)
         else:
             ordernew.append(order[i])
@@ -159,13 +186,14 @@ def rank_bass(frets, chord, tuning, order):
 rankfuncs = [rank_reach,       \
              rank_spread,      \
              rank_fingers,     \
-             rank_pitch,       \
+             rank_pitch_hi,    \
+             rank_pitch_lo,    \
              rank_full,        \
              rank_mute,        \
              rank_structure,   \
              rank_bass]
 
 # define main rank function. "ranks" is list of coeffs.
-def rank(frets, chord, tuning, order, ranks):
-    return sum([ranks[i] * rankfuncs[i](frets, chord, tuning, order) \
+def rank(frets, chord, tuning, order, ranks, stringstarts):
+    return sum([ranks[i] * rankfuncs[i](frets, chord, tuning, order, stringstarts) \
                 for i in range(len(rankfuncs))])

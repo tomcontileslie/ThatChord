@@ -128,10 +128,10 @@ else:
     filename = request
 
 # Find the list of chords.
-options = find.find(chord, tuning, nfrets, nmute, important)
+options = find.find(chord, tuning, nfrets, stringstarts, nmute, important)
 
 # Sort the options using rank
-options.sort(key = lambda x : rank.rank(x, chord, tuning, order, ranks))
+options.sort(key = lambda x : rank.rank(x, chord, tuning, order, ranks, stringstarts))
 
 # Check the requested option is not too big
 if listpos >= len(options):
