@@ -35,7 +35,7 @@ def increment(maxes, current):
             return
         current[i] = 0
 
-def find(chord, tuning, nfrets, nmute = 0, important = 0):
+def find(chord, tuning, nfrets, stringstarts, nmute = 0, important = 0):
     """
     This function is called in the main file, thatchord.py.
     
@@ -66,7 +66,7 @@ def find(chord, tuning, nfrets, nmute = 0, important = 0):
         valids.append([])
         if i < nmute:
             valids[i].append(-1)
-        for j in range(nfrets + 1):
+        for j in range(stringstarts[i], nfrets + 1):
             if (tuning[i] + j) % 12 in chord:
                 valids[i].append(j)
     
