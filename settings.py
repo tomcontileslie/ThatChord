@@ -301,6 +301,12 @@ if not save_method in ["SINGLE", "LIBRARY", "NONE"]:
 
 if output_method == "PRINT" and not output_format == "TEXT":
     err("incompatible output")
+    
+if len(tuning) != len(order):
+    err(17)
+
+if len(stringstarts) < len(tuning):
+    err(18)
 
 # CHANGE TUNING TO IMAGINED NECK, FOR STRINGS STARTING HIGHER THAN 0TH FRET
 for i in range(len(tuning)):

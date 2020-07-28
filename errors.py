@@ -141,4 +141,16 @@ def err(reason):
             + """index after the colon."""
         raise ChordError(out)
     
+    # REASON 17: LISTS IN SETTINGS NOT OF SAME LENGTH
+    if reason == "lenlists" or reason == 17:
+        out = """In the settings file, please ensure that the variables """   \
+            + """"tuning" and "order" have the same length."""
+        raise ChordError(out)
+    
+    # REASON 18: STRINGSTARTS IS TOO SHORT
+    if reason == "stringstarts" or reason == 18:
+        out = """In the settings file, please ensure that the variable """    \
+            + """"stringstarts" is at least as long as the number of frets."""
+        raise ChordError(out)
+    
     raise ChordError(str(reason))
