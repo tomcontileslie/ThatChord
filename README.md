@@ -6,7 +6,9 @@
 
 **These files are distributed under a Creative Commons Share Alike license.**
 
-[![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/) [![Build Status](https://travis-ci.com/tomcontileslie/ThatChord.svg?branch=master)](https://travis-ci.com/tomcontileslie/ThatChord)
+[![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+
+[![Build Status](https://travis-ci.com/tomcontileslie/ThatChord.svg?branch=master)](https://travis-ci.com/tomcontileslie/ThatChord)
 
 ## What is ThatChord?
 
