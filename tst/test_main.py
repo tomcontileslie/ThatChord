@@ -35,7 +35,15 @@ class TestInterpret:
     # GARBAGE INPUTS
     def test_interpret_nonsensicalinputs(self):
         # Tests that nonsensical inputs return errors.
-        for garbage in ["Hmaj7", "C#yeet", "Dmin(b0)", "Fbm/H", "WXYZ"]:
+        for garbage in ["Hmaj7",
+                        "C#yeet",
+                        "Dmin(b0)",
+                        "Fbm/H",
+                        "WXYZ",
+                        "",
+                        "G////",
+                        "   "
+                        ]:
             with pytest.raises(ChordError):
                 interpret.interpret(garbage)
 
@@ -49,6 +57,26 @@ class TestInterpret:
     def test_interpret_basicinputs_03(self):
         assert set(interpret.interpret("F#7")) == {1, 4, 6, 10}
     def test_interpret_basicinputs_04(self):
-        assert set(interpret.interpret(""))
+        assert set(interpret.interpret("B5")) == {6, 11}
+    def test_interpret_basicinputs_05(self):
+        assert set(interpret.interpret("eb6")) == {0, 3, 7, 10}
 
-    # CHECK NO DUPLICATE NOTES IN ANY CHORD
+    # ALTERATIONS
+    def test_interpret_alterations_01(self):
+        assert set(interpret.interpret("C7(#5)")) == {0, 4, 8, 10}
+    def test_interpret_alterations_02(self):
+        assert set(interpret.interpret("C9(#7)")) == {0, 2, 4, 7, 11}
+    def test_interpret_alterations_03(self):
+        assert set(interpret.interpret("D(##5)")) == {2, 6, 11}
+    def test_interpret_alterations_04(self):
+        assert set(interpret.interpret("C#(b#bb#b3)")) == {1, 3, 8}
+    def test_interpret_alterations_05(self):
+        assert set(interpret.interpret("bb(#b5)")) == set(interpret.interpret("bb"))
+    def test_interpret_alterations_06(self):
+        assert set(interpret.interpret("Gm(#6)")) == {2, 5, 7, 10}
+    
+    # BASS NOTES
+    def test_interpret_bass_01(self):
+        assert set(interpret.interpret("Dsus2/C")) == {0, 2, 4, 9}
+    def test_interpret_bass_02(self):
+        assert interpret.interpret("E7/B")[0] == 11
