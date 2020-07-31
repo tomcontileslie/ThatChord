@@ -18,7 +18,7 @@ saving:
 
 # If the instrument preset is not recognised, the settings below are used:
 custom_instrument:
-  - tuning: B B E A
+  - tuning: G C E A
   - nfrets: 12
   - nmute: 0
   - important: 4

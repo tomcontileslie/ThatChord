@@ -74,18 +74,21 @@ import custom
 import settings
 from errors import err
 
+# Load settings from file. All defaults here so empty input.
+settings, kwgrargs, kwioargs = settings.get_settings()
+
 # First, figure out what the request is.
-if settings.input_type == "CONSOLE":
+if settings["input_type"] == "CONSOLE":
     request = input("Enter request here: ")
-elif settings.input_type == "TERMINAL":
+elif settings["input_type"] == "TERMINAL":
     import sys
     request = sys.argv[1]
 
 # Special inputs here:
-if request == "SETTINGS":
+if request.upper() == "SETTINGS":
     # Typing SETTINGS opens the settings file.
     script_directory = os.path.dirname(os.path.realpath(__file__))
-    settings_path = os.path.join(script_directory, "settings.py")
+    settings_path = os.path.join(script_directory, "settings.yml")
     os.system("open " + settings_path)
     exit()
 
@@ -106,7 +109,7 @@ if ":" in request:
     request = request[:colon_positions[0]]
     
 
-if request[0:6] == "CUSTOM":
+if request[0:6].upper() == "CUSTOM":
     # custom note by note input triggered. Code in "custom.py".
     chord = custom.interpret(request[6:])
     # title removes CUSTOM but adds exclamation mark to indicate custom.
@@ -120,31 +123,31 @@ else:
     filename = request
 
 # Find the list of chords.
-options = find.find(chord, settings.tuning, settings.nfrets, settings.stringstarts, settings.nmute, settings.important)
+options = find.find(chord, settings["tuning"], settings["nfrets"], settings["stringstarts"], settings["nmute"], settings["important"])
 
 # Sort the options using rank
-options.sort(key = lambda x : rank.rank(x, chord, settings.tuning, settings.order, settings.ranks, settings.stringstarts))
+options.sort(key = lambda x : rank.rank(x, chord, settings["tuning"], settings["order"], settings["ranks"], settings["stringstarts"]))
 
 # Check the requested option is not too big
 if listpos >= len(options):
     err(16)
 
 # figure out what the output format is
-if settings.output_format == "TEXT":
+if settings["output_format"] == "TEXT":
     output.text(
             options[listpos],
             name = filename,
             title = title,
-            **settings.kwgrargs,
-            **settings.kwioargs
+            **kwgrargs,
+            **kwioargs
             )
 
 # TODO no options for where to put title yet
-elif settings.output_format == "PNG":
+elif settings["output_format"] == "PNG":
     output.img(
             options[listpos],
             name = filename,
             title = title,
-            **settings.kwgrargs,
-            **settings.kwioargs
+            **kwgrargs,
+            **kwioargs
             )

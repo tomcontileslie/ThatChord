@@ -114,7 +114,8 @@ def err(reason):
         out = """Custom input not recongised. To enter a chord note by note"""\
             + """, type "CUSTOM" followed by a list of notes separated by """ \
             + """spaces or commas. Notes can be entered as e.g. 'C#', 'G', """\
-            + """'Bb', or as numbers 0-11 (0=C, 1=C#, ...)"""
+            + """'Bb', or as numbers 0-11 (0=C, 1=C#, ...).\nIt may also be"""\
+            + """ that your custom tuning contains no notes."""
         raise ChordError(out)
     
     # REASON 14: TOO MANY COLONS IN INPUT
@@ -151,6 +152,20 @@ def err(reason):
     if reason == "stringstarts" or reason == 18:
         out = """In the settings file, please ensure that the variable """    \
             + """"stringstarts" is at least as long as the number of frets."""
+        raise ChordError(out)
+    
+    # REASON 19: SETTINGS YML FILE NOT FOUND
+    if reason == "settingsnotfound" or reason == 19:
+        out = """Could not find the settings.yml file. Please ensure that a"""\
+            + """ file with that name is in your ThatChord folder."""
+        raise ChordError(out)
+    
+    # REASON 20: SETTINGS MISSING
+    if reason == "settingsmissing" or reason == 20:
+        out = """Some bullet points are missing from the settings.yml file."""\
+            + """ Please ensure it contains points: presets; input; output;"""\
+            + """ saving; custom_instrument; custom_ranking; graphical_p"""   \
+            + """arameters."""
         raise ChordError(out)
     
     raise ChordError(str(reason))
