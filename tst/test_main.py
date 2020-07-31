@@ -29,6 +29,9 @@ from errors import ChordError
 
 # Import ThatChord functions for testing
 import interpret
+import find
+import settings
+import rank
 
 class TestInterpret:
 
@@ -80,3 +83,116 @@ class TestInterpret:
         assert set(interpret.interpret("Dsus2/C")) == {0, 2, 4, 9}
     def test_interpret_bass_02(self):
         assert interpret.interpret("E7/B")[0] == 11
+
+class TestFind:
+    
+    # TEST ON SMALL INPUTS
+    def test_find_smallinput(self):
+        # Only one way of playing Cmaj on uke neck with 3 frets
+        assert find.find([0, 4, 7],
+                         [7, 0, 4, 9],
+                         3,
+                         [0, 0, 0, 0]) == [[0, 0, 0, 3]]
+    
+    # CHECK NO CHORDS ARE PROPOSED WITH FRETS BELOW STRINGSTARTS
+    def test_find_stringstarts(self):
+        options = find.find([7, 2, 9],
+                            [7, 2, 7, 11, 2],
+                            15,
+                            [5, 0, 0, 0, 0])
+        for opt in options:
+            assert opt[0] >= 5
+    
+    # CHECK THERE IS AN ERROR IF NO CHORDS ARE POSSIBLE
+    def test_find_nooptions(self):
+        with pytest.raises(ChordError):
+            find.find([0, 4, 7],
+                      [7, 0, 4, 9],
+                      2,
+                      [0, 0, 0, 0])
+    
+    # BASIC CHECK HIGH UP NECK
+    def test_find_highneck(self):
+        assert [10, 9, 8, 8] in find.find(interpret.interpret("F"),
+                                          [7, 0, 4, 9],
+                                          12,
+                                          [0, 0, 0, 0])
+    
+    # CHECK THAT IF MUTE IS ALLOWED, MUTED CHORDS ARE FOUND
+    def test_find_mute_01(self):
+        def muteworks():
+            options = find.find([0, 4, 7],
+                                [4, 9, 2, 7, 11, 4],
+                                15,
+                                [0, 0, 0, 0, 0, 0],
+                                nmute = 2,
+                                important = 6
+                                )
+            for opt in options:
+                if opt[0] == -1 and opt[1] == -1:
+                    return True
+            return False
+        assert muteworks()
+    
+    # CHECK THAT IF MUTE IS NOT ALLOWED, MUTED CHORDS ARE NOT FOUND
+    def test_find_mute_02(self):
+        def muteworks():
+            options = find.find([0, 4, 7],
+                                [4, 9, 2, 7, 11, 4],
+                                15,
+                                [0, 0, 0, 0, 0, 0],
+                                nmute = 0,
+                                important = 6
+                                )
+            for opt in options:
+                if opt[0] == -1 and opt[1] == -1:
+                    return False
+            return True
+        assert muteworks()
+    
+    # CHECK THAT ONLY C'S WORKS FOR CMAJ IF ONLY 1 NOTE IS IMPORTANT
+    def test_find_smallimportant(self):
+        assert [5, 0, 8, 3] in find.find([0, 4, 7],
+                                         [7, 0, 4, 9],
+                                         12,
+                                         [0, 0, 0, 0],
+                                         nmute = 0,
+                                         important = 1)
+
+class TestRank:
+    
+    # because we can't define custom settings outside of settings.py, for now
+    # this just tests that the default setting (soprano ukulele) produces
+    # reasonable results for basic chords with an obvious best choice.
+    # TODO change settings so the entries can be overwritten.
+    def test_rank_basicuke_01(self):
+        # tests that C major is what you would expect.
+        options = find.find([0, 4, 7],
+                            settings.tuning,
+                            settings.nfrets,
+                            settings.stringstarts,
+                            settings.nmute,
+                            settings.important)
+        options.sort(key = lambda x : rank.rank(x,
+                                                [0, 4, 7],
+                                                settings.tuning,
+                                                settings.order,
+                                                settings.ranks,
+                                                settings.stringstarts))
+        assert options[0] == [0, 0, 0, 3]
+    
+    def test_rank_basicuke_02(self):
+        # tests that A minor is what you would expect.
+        options = find.find([9, 4, 0],
+                            settings.tuning,
+                            settings.nfrets,
+                            settings.stringstarts,
+                            settings.nmute,
+                            settings.important)
+        options.sort(key = lambda x : rank.rank(x,
+                                                [9, 4, 0],
+                                                settings.tuning,
+                                                settings.order,
+                                                settings.ranks,
+                                                settings.stringstarts))
+        assert options[0] == [2, 0, 0, 0]
