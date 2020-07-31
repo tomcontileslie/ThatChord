@@ -80,12 +80,14 @@ output_method  = "SPLASH"
 # --------------------------------------------------------------------------- #
 save_method = "SINGLE"
 # --------------------------------------------------------------------------- #
-# files are saved to the following directory. Don't forget to add a slash.
-# recommended is to save in a dedicated "diagrams/" folder inside the ThatChord
+# files are saved to the following directory.
+# recommended is to save in a dedicated "diagrams" folder inside the ThatChord
 # folder.
 # DANGER: SAVING MAY OVERWRITE LOCAL FILES. FILENAMES CONTAIN "THATCHORD" TO
 # AVOID CLASHES WITH UNRELATED FILES.
-save_loc = "diagrams/"
+# --------------------------------------------------------------------------- #
+save_loc = "~/Documents/ThatChord/diagrams"
+# --------------------------------------------------------------------------- #
 
 
 # GRAPHICAL PARAMETERS HERE. A number of drawing options are available. See
@@ -141,6 +143,7 @@ top = True
 
 
 from errors import err
+import os
 
 if instrument_preset[-2:] == "-L":
     left = True
@@ -329,5 +332,5 @@ kwgrargs = {
 kwioargs = {
         "output_method" : output_method,
         "save_method"   : save_method,
-        "save_loc"      : save_loc
+        "save_loc"      : os.path.expanduser(save_loc)
         }

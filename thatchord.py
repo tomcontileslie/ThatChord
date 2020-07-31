@@ -30,14 +30,6 @@ request =                        "Gadd9"
 # --------------------------------------------------------------------------- #
 
 
-############            SET YOUR WORKING DIRECTORY HERE            ############
-#####                 recommended: "~/Documents/ThatChord"                #####
-
-# --------------------------------------------------------------------------- #
-wdir =                     "~/Documents/ThatChord"
-# --------------------------------------------------------------------------- #
-
-
 
 
 
@@ -72,10 +64,6 @@ wdir =                     "~/Documents/ThatChord"
 
 # change current directory
 import os
-os.chdir(os.path.expanduser(wdir))
-
-# Load settings
-exec(open("settings.py").read())
 
 # Load other files
 import interpret
@@ -83,18 +71,22 @@ import find
 import rank
 import output
 import custom
+import settings
+from errors import err
 
 # First, figure out what the request is.
-if input_type == "CONSOLE":
+if settings.input_type == "CONSOLE":
     request = input("Enter request here: ")
-if input_type == "TERMINAL":
+elif settings.input_type == "TERMINAL":
     import sys
     request = sys.argv[1]
 
 # Special inputs here:
 if request == "SETTINGS":
     # Typing SETTINGS opens the settings file.
-    os.system("open settings.py")
+    script_directory = os.path.dirname(os.path.realpath(__file__))
+    settings_path = os.path.join(script_directory, "settings.py")
+    os.system("open " + settings_path)
     exit()
 
 # Check whether a specific position in the list was requested. If not, 0 is
@@ -128,31 +120,31 @@ else:
     filename = request
 
 # Find the list of chords.
-options = find.find(chord, tuning, nfrets, stringstarts, nmute, important)
+options = find.find(chord, settings.tuning, settings.nfrets, settings.stringstarts, settings.nmute, settings.important)
 
 # Sort the options using rank
-options.sort(key = lambda x : rank.rank(x, chord, tuning, order, ranks, stringstarts))
+options.sort(key = lambda x : rank.rank(x, chord, settings.tuning, settings.order, settings.ranks, settings.stringstarts))
 
 # Check the requested option is not too big
 if listpos >= len(options):
     err(16)
 
 # figure out what the output format is
-if output_format == "TEXT":
+if settings.output_format == "TEXT":
     output.text(
             options[listpos],
             name = filename,
             title = title,
-            **kwgrargs,
-            **kwioargs
+            **settings.kwgrargs,
+            **settings.kwioargs
             )
 
 # TODO no options for where to put title yet
-if output_format == "PNG":
+elif settings.output_format == "PNG":
     output.img(
             options[listpos],
             name = filename,
             title = title,
-            **kwgrargs,
-            **kwioargs
+            **settings.kwgrargs,
+            **settings.kwioargs
             )
