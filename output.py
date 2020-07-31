@@ -172,7 +172,7 @@ def text(
             with open(filename, "w") as f:
                 # Create the folder if it doesn't exist
                 if not os.path.isdir(save_loc):
-                    os.mkdir(save_loc)
+                    os.makedirs(save_loc)
                 f.write(out)
         except FileNotFoundError:
             err("file not found")
@@ -383,7 +383,7 @@ def img(
         try:
             # create the folder if it doesn't exist
             if not os.path.isdir(save_loc):
-                os.mkdir(save_loc)
+                os.makedirs(save_loc)
             img.save(filename)
         except OSError:
             err("file not found")

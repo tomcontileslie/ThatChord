@@ -80,12 +80,14 @@ output_method  = "SPLASH"
 # --------------------------------------------------------------------------- #
 save_method = "SINGLE"
 # --------------------------------------------------------------------------- #
-# files are saved to the following directory. Don't forget to add a slash.
-# recommended is to save in a dedicated "diagrams/" folder inside the ThatChord
+# files are saved to the following directory.
+# recommended is to save in a dedicated "diagrams" folder inside the ThatChord
 # folder.
 # DANGER: SAVING MAY OVERWRITE LOCAL FILES. FILENAMES CONTAIN "THATCHORD" TO
 # AVOID CLASHES WITH UNRELATED FILES.
-save_loc = "diagrams"
+# --------------------------------------------------------------------------- #
+save_loc = "~/Documents/ThatChord/diagrams"
+# --------------------------------------------------------------------------- #
 
 
 # GRAPHICAL PARAMETERS HERE. A number of drawing options are available. See
