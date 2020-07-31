@@ -143,6 +143,7 @@ top = True
 
 
 from errors import err
+import os
 
 if instrument_preset[-2:] == "-L":
     left = True
@@ -331,5 +332,5 @@ kwgrargs = {
 kwioargs = {
         "output_method" : output_method,
         "save_method"   : save_method,
-        "save_loc"      : save_loc
+        "save_loc"      : os.path.expanduser(save_loc)
         }

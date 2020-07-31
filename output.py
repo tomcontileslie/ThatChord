@@ -168,12 +168,14 @@ def text(
         filename = os.path.join(save_loc, "ThatChord" + name + ".txt")
         
     if save_method == "SINGLE" or save_method == "LIBRARY":
+
         try:
+            if not os.path.isdir(save_loc):
+                os.makedirs(save_loc)
             with open(filename, "w") as f:
-                # Create the folder if it doesn't exist
-                if not os.path.isdir(save_loc):
-                    os.makedirs(save_loc)
                 f.write(out)
+        except OSError:
+            err("file not found")
         except FileNotFoundError:
             err("file not found")
     
