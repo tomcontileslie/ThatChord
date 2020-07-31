@@ -15,7 +15,7 @@
 ###############################################################################
 ###############################################################################
 
-
+import os
 # import error messages
 from errors import err
 
@@ -40,7 +40,7 @@ def text(
          # input/output arguments, will be passed as **kwioargs
          output_method = "PRINT",
          save_method = "NONE",
-         save_loc = "diagrams/",
+         save_loc = "diagrams",
         ):
     
     """
@@ -62,7 +62,7 @@ def text(
     
     muted is the mark at the top of a muted string.
     """
-    
+
     frets = frets_in.copy()
     if left:
         frets.reverse()
@@ -163,21 +163,19 @@ def text(
     
     # two possible save methods, if any are supplied.
     if save_method == "SINGLE":
-        filename = save_loc + "ThatChordTemp.txt"
-    if save_method == "LIBRARY":
-        filename = save_loc + "ThatChord" + name + ".txt"
+        filename = os.path.join(save_loc, "ThatChordTemp.txt")
+    elif save_method == "LIBRARY":
+        filename = os.path.join(save_loc, "ThatChord" + name + ".txt")
         
     if save_method == "SINGLE" or save_method == "LIBRARY":
         try:
-            f = open(filename, "w")
+            with open(filename, "w") as f:
+                f.write(out)
         except FileNotFoundError:
             err("file not found")
-        f.write(out)
-        f.close()
     
     # If asked to splash, do so now that the file is saved.
     if output_method == "SPLASH":
-        import os
         os.system("open " + filename)
 
 
@@ -375,11 +373,13 @@ def img(
     # two possible save methods, if any are supplied.
     if save_method == "SINGLE":
         filename = save_loc + "ThatChordTemp.png"
-    if save_method == "LIBRARY":
+    elif save_method == "LIBRARY":
         filename = save_loc + "ThatChord" + name + ".png"
         
     if save_method == "SINGLE" or save_method == "LIBRARY":
         try:
+            if not os.path.isdir(save_loc):
+                os.mkdir(save_loc)
             img.save(filename)
         except OSError:
             err("file not found")
