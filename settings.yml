@@ -1,0 +1,41 @@
+presets:
+  - instrument: ukulele
+  - ranking: ukulele
+
+input:
+  - how: terminal
+
+output:
+  - how: splash
+  - format: png
+
+saving:
+  - method: single
+  - location: ~/Documents/ThatChord/diagrams
+
+
+
+
+# If the instrument preset is not recognised, the settings below are used:
+custom_instrument:
+  - tuning: B B E A
+  - nfrets: 12
+  - nmute: 0
+  - important: 4
+  - order: [2, 0, 1, 3]
+  - handedness: right
+  - stringstarts: [0, 0, 0, 0]
+
+# If the ranking preset is not recognised, the settings below are used:
+custom_ranking:
+  - ranks: [1, 2, 3, 1, 0, 0, 0, 0, 0]
+
+# Graphical parameters here.
+graphical_parameters:
+  - height: 5
+  - margin: 3
+  - head: "="
+  - string: "|"
+  - press: O
+  - muted: x
+  - title_at_top: yes
