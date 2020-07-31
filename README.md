@@ -2,7 +2,7 @@
 
 **Created by Tom Conti-Leslie: [tomcontileslie.com](http://tomcontileslie.com).**
 
-**I am grateful for the helpful contributions of Sophie Purkis Charters.**
+**I am grateful for the helpful contributions of Sophie Purkis Charters, [@joshwd36](https://github.com/joshwd36) and [Georg Wölflein](https://github.com/georgw777).**
 
 **These files are distributed under a Creative Commons Share Alike license.**
 
