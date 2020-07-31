@@ -62,6 +62,11 @@ def interpret(ss):
     # start by removing extra symbols
     s = ss.translate({ord(c) : None for c in " ,._;:|><*"})
     
+    # create copies of the dicts to avoid changes bleeding over
+    notes = dict(dicts.notes)
+    alterations = dict(dicts.alterations)
+    qualities = dict(dicts.qualities)
+    
     # match to regexp
     m = re.match(structure, s)
     if not m:
@@ -69,7 +74,7 @@ def interpret(ss):
     W, X, Y, Z = m.group(1), m.group(2), m.group(3), m.group(6)
     
     try:
-        out = dicts.qualities[X]
+        out = qualities[X].copy()
     except KeyError:
         err(1)
     
@@ -85,7 +90,7 @@ def interpret(ss):
             alt = sum([pm(i) for i in m.group(1)]) # so bb becomes -2
             num = int(m.group(2))
             try:
-                pair = dicts.alterations[num]
+                pair = alterations[num]
             except KeyError:
                 err(2)
             
@@ -107,12 +112,12 @@ def interpret(ss):
             Y = Y[m.end():] # remove this alteration
     
     # Scale everything to the correct key
-    root = dicts.notes[W[0]] + pm(W[1 : 2])
+    root = notes[W[0]] + pm(W[1 : 2])
     out = [(root + n) % 12 for n in out]
     
     if Z:
         # a bass note was supplied
-        bass = (dicts.notes[Z[0]] + pm(Z[1 : 2])) % 12
+        bass = (notes[Z[0]] + pm(Z[1 : 2])) % 12
         if bass in out:
             # move bass to front
             out.remove(bass)

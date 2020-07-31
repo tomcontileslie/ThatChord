@@ -8,6 +8,8 @@
 
 [![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
 
+[![Build Status](https://travis-ci.com/tomcontileslie/ThatChord.svg?branch=master)](https://travis-ci.com/tomcontileslie/ThatChord)
+
 ## What is ThatChord?
 
 That's exactly the question I ask myself a lot when I'm looking at a chord sheet for a song I'm learning, and the key it's in is bad
