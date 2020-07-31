@@ -85,7 +85,7 @@ save_method = "SINGLE"
 # folder.
 # DANGER: SAVING MAY OVERWRITE LOCAL FILES. FILENAMES CONTAIN "THATCHORD" TO
 # AVOID CLASHES WITH UNRELATED FILES.
-save_loc = "diagrams/"
+save_loc = "diagrams"
 
 
 # GRAPHICAL PARAMETERS HERE. A number of drawing options are available. See

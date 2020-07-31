@@ -160,7 +160,7 @@ def text(
     # Print if requested.
     if output_method == "PRINT":
         print(out)
-    
+
     # two possible save methods, if any are supplied.
     if save_method == "SINGLE":
         filename = os.path.join(save_loc, "ThatChordTemp.txt")
@@ -170,6 +170,9 @@ def text(
     if save_method == "SINGLE" or save_method == "LIBRARY":
         try:
             with open(filename, "w") as f:
+                # Create the folder if it doesn't exist
+                if not os.path.isdir(save_loc):
+                    os.mkdir(save_loc)
                 f.write(out)
         except FileNotFoundError:
             err("file not found")
@@ -372,12 +375,13 @@ def img(
     
     # two possible save methods, if any are supplied.
     if save_method == "SINGLE":
-        filename = save_loc + "ThatChordTemp.png"
+        filename = os.path.join(save_loc, "ThatChordTemp.png")
     elif save_method == "LIBRARY":
-        filename = save_loc + "ThatChord" + name + ".png"
+        filename = os.path.join(save_loc, "ThatChord" + name + ".png")
         
     if save_method == "SINGLE" or save_method == "LIBRARY":
         try:
+            # create the folder if it doesn't exist
             if not os.path.isdir(save_loc):
                 os.mkdir(save_loc)
             img.save(filename)
