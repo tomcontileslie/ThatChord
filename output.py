@@ -182,6 +182,10 @@ def text(
     # If asked to splash, do so now that the file is saved.
     if output_method == "SPLASH":
         os.system("open " + filename)
+    
+    # If not asked to do anything, return value.
+    if output_method == "NONE":
+        return out
 
 
 def img(

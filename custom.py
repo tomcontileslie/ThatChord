@@ -34,7 +34,7 @@ def pm(s):
         return + 1
     return 0
 
-def interpret(request):
+def interpret(request, remove_duplicates = True):
     # make a copy of request which we chop notes off
     rc = request
     # initialise empty request. We will fill this note by note
@@ -58,12 +58,15 @@ def interpret(request):
         m = re.match(structure, rc)
     
     # now remove duplicates but maintain order.
-    seen = set()
-    out2 = []
-    for note in out:
-        if not note in seen:
-            seen.add(note)
-            out2.append(note)
+    if remove_duplicates:
+        seen = set()
+        out2 = []
+        for note in out:
+            if not note in seen:
+                seen.add(note)
+                out2.append(note)
+    else:
+        out2 = out.copy()
 
     if out2 == []:
         err(13)

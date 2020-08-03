@@ -32,6 +32,7 @@ import interpret
 import find
 import settings
 import rank
+import output
 
 class TestInterpret:
 
@@ -167,32 +168,131 @@ class TestRank:
     # TODO change settings so the entries can be overwritten.
     def test_rank_basicuke_01(self):
         # tests that C major is what you would expect.
+        ukesettings, _, _ = settings.get_settings(instrument_preset = "UKULELE",
+                                                  ranking_preset = "UKULELE")
         options = find.find([0, 4, 7],
-                            settings.tuning,
-                            settings.nfrets,
-                            settings.stringstarts,
-                            settings.nmute,
-                            settings.important)
+                            ukesettings["tuning"],
+                            ukesettings["nfrets"],
+                            ukesettings["stringstarts"],
+                            ukesettings["nmute"],
+                            ukesettings["important"])
         options.sort(key = lambda x : rank.rank(x,
                                                 [0, 4, 7],
-                                                settings.tuning,
-                                                settings.order,
-                                                settings.ranks,
-                                                settings.stringstarts))
+                                                ukesettings["tuning"],
+                                                ukesettings["order"],
+                                                ukesettings["ranks"],
+                                                ukesettings["stringstarts"]))
         assert options[0] == [0, 0, 0, 3]
     
     def test_rank_basicuke_02(self):
-        # tests that A minor is what you would expect.
+        # tests that C major is what you would expect.
+        ukesettings, _, _ = settings.get_settings(instrument_preset = "UKULELE",
+                                                  ranking_preset = "UKULELE")
         options = find.find([9, 4, 0],
-                            settings.tuning,
-                            settings.nfrets,
-                            settings.stringstarts,
-                            settings.nmute,
-                            settings.important)
+                            ukesettings["tuning"],
+                            ukesettings["nfrets"],
+                            ukesettings["stringstarts"],
+                            ukesettings["nmute"],
+                            ukesettings["important"])
         options.sort(key = lambda x : rank.rank(x,
                                                 [9, 4, 0],
-                                                settings.tuning,
-                                                settings.order,
-                                                settings.ranks,
-                                                settings.stringstarts))
+                                                ukesettings["tuning"],
+                                                ukesettings["order"],
+                                                ukesettings["ranks"],
+                                                ukesettings["stringstarts"]))
         assert options[0] == [2, 0, 0, 0]
+    
+    # TODO test individual ranking funcs (require that new rank funcs be added
+    # at end of list to avoid disrupting order of existing coeffs)
+
+class TestSettings:
+    
+    # Firstly test that the preset "CUSTOM" has not been assigned.
+    # It should always be reserved for custom variable definitions.
+    def test_settings_custominstrument(self):
+        s1, _, _ = settings.get_settings(instrument_preset = "CUSTOM",
+                                         tuning = [1, 1, 1, 1],
+                                         nfrets = 1,
+                                         nmute = 1,
+                                         important = 1,
+                                         order = [1, 1, 1, 1],
+                                         stringstarts = [0, 0, 0, 0])
+        s2, _, _ = settings.get_settings(instrument_preset = "CUSTOM",
+                                         tuning = [2, 2, 2, 2],
+                                         nfrets = 2,
+                                         nmute = 2,
+                                         important = 2,
+                                         order = [2, 2, 2, 2],
+                                         stringstarts = [0, 0, 0, 1])
+        assert all([s1[x] != s2[x] for x in ["tuning",
+                                            "nfrets",
+                                            "nmute",
+                                            "important",
+                                            "order",
+                                            "stringstarts"]])
+    
+    def test_settings_customrank(self):
+        s1, _, _ = settings.get_settings(ranking_preset = "CUSTOM",
+                                         ranks = [0, 0, 0, 0, 0, 0, 0, 0])
+        s2, _, _ = settings.get_settings(ranking_preset = "CUSTOM",
+                                         ranks = [0, 0, 0, 0, 0, 0, 0, 1])
+        assert s1["ranks"] != s2["ranks"]
+
+class TestOutput:
+    
+    # we can do little to test image output but we can test text output.
+    
+    # TEST THAT THE DIAGRAM CONTAINS PRESSED ICONS IF NEEDED
+    def test_output_textpressed(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        # choose some silly value for pressed symbol
+        kwgrargs = {"press" : "k"}
+        out = output.text([0, 4, 2, 1], **kwgrargs, **kwioargs)
+        assert len([i for i,x in enumerate(out) if x == "k"]) == 3
+    
+    # CHECK THAT HEADER DOES NOT PRINT IF CHORD IS HIGH
+    def test_output_textheader_01(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        # choose some silly value for header symbol
+        kwgrargs = {"head" : "h",
+                    "height" : 5}
+        out = output.text([10, 11, 12, 13], **kwgrargs, **kwioargs)
+        assert "h" not in out
+    # GENERAL TEST THAT HEADER PRINTS WELL, even if spread across many frets
+    def test_output_textheader_02(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        # choose some silly value for header symbol
+        kwgrargs = {"head" : "h"}
+        out = output.text([1, 0, 23, 24], **kwgrargs, **kwioargs)
+        assert "hhhhhhh" in out and "hhhhhhhh" not in out
+    
+    # CHECK THERE ARE NO ROGUE SYMBOLS FOR BANJO
+    def test_output_textstringstarts_01(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        # choose some silly value for pressed symbol
+        kwgrargs = {"press" : "k",
+                    "stringstarts" : [5, 0, 0, 0, 0]}
+        out = output.text([4, 0, 0, 0, 0], **kwgrargs, **kwioargs)
+        assert len([i for i,x in enumerate(out) if x == "k"]) == 0
+    def test_output_textstringstarts_02(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        # choose some silly value for header symbol
+        kwgrargs = {"head" : "h",
+                    "stringstarts" : [5, 0, 0, 0, 0]}
+        out = output.text([4, 0, 0, 0, 0], **kwgrargs, **kwioargs)
+        # THE HEADER SHOULD EXTEND ACROSS 4, NOT 5, STRINGS, SO 7 CHARACTERS
+        assert len([i for i,x in enumerate(out) if x == "h"]) == 7
+    
+    # CHECK THAT OUTPUT REFUSES TO WORK IF A SMALL MARGIN IS SET WUTH LARGE
+    # FRET NUMBER (to avoid unaligned diagram) with pytest.raises(ch)
+    def test_output_textmargin(self):
+        kwioargs = {"output_method" : "NONE",
+                    "save_method" : "NONE"}
+        kwgrargs = {"margin" : 2}
+        with pytest.raises(ChordError):
+            out = output.text([20, 20, 21, 22], **kwgrargs, **kwioargs)
