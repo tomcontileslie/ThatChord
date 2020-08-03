@@ -110,7 +110,6 @@ def get_settings(settingsfile      = "settings.yml",
     
     script_directory = os.path.dirname(os.path.realpath(__file__))
     settings_path = os.path.join(script_directory, settingsfile)
-    print(settings_path)
     try:
         with open(settings_path, "r") as file:
             content = yaml.load(file, Loader=yaml.FullLoader)
