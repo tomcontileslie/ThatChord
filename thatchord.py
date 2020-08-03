@@ -75,14 +75,65 @@ import settings
 from errors import err
 
 # Load settings from file. All defaults here so empty input.
-settings, kwgrargs, kwioargs = settings.get_settings()
+tcsettings, kwgrargs, kwioargs = settings.get_settings()
 
 # First, figure out what the request is.
-if settings["input_type"] == "CONSOLE":
+if tcsettings["input_type"] == "CONSOLE":
     request = input("Enter request here: ")
-elif settings["input_type"] == "TERMINAL":
+elif tcsettings["input_type"] == "TERMINAL":
     import sys
-    request = sys.argv[1]
+    import argparse
+
+    # Terminal input allows for command line options.
+    parser = argparse.ArgumentParser(prog = "thatchord.py",
+                                     usage = ("python3 thatchord.py <request> "+
+                                              "[OPTIONS]"))
+
+    parser.add_argument("request", nargs = 1, type = str,
+            help = ("requested chord of form WX(Y)/Z:T, " +
+                    "where W is the root note, "          +
+                    "X is the chord quality, "            +
+                    "Y is a list of alterations, "        +
+                    "Z is the bass note, "                +
+                    "and T is the desired index in the list"))
+
+    parser.add_argument("-c", "--configuration", nargs = "?", type = str,
+                        help = (".yml file to take settings from; its settings"+
+                                " are overriden by the options below"))
+
+    parser.add_argument("-i", "--instrument", nargs = "?", type = str,
+                        help = "instrument preset")
+
+    parser.add_argument("-r", "--ranking", nargs = "?", type = str,
+                        help = "ranking preset")
+
+    parser.add_argument("-f", "--format", nargs = "?", type = str,
+                        help = "output format: text or png")
+
+    parser.add_argument("-o", "--output", nargs = "?", type = str,
+                        help = "output method: print, splash or none")
+
+    parser.add_argument("-s", "--save", nargs = "?", type = str,
+                        help = "save method: single, library or none")
+
+    parser.add_argument("-d", "--directory", nargs = "?", type = str,
+                        help = "directory to save diagrams")
+
+    args = parser.parse_args()
+
+    request = args.request[0]
+
+    # populate dict with kwargs
+    override = {"instrument_preset" : args.instrument,
+                "ranking_preset"    : args.ranking,
+                "output_format"     : args.format,
+                "output_method"     : args.output,
+                "save_method"       : args.save,
+                "save_loc"          : args.directory}
+    if args.configuration:
+        override["settingsfile"] = args.configuration
+
+    tcsettings, kwgrargs, kwioargs = settings.get_settings(**override)
 
 # Special inputs here:
 if request.upper() == "SETTINGS":
@@ -123,17 +174,17 @@ else:
     filename = request
 
 # Find the list of chords.
-options = find.find(chord, settings["tuning"], settings["nfrets"], settings["stringstarts"], settings["nmute"], settings["important"])
+options = find.find(chord, tcsettings["tuning"], tcsettings["nfrets"], tcsettings["stringstarts"], tcsettings["nmute"], tcsettings["important"])
 
 # Sort the options using rank
-options.sort(key = lambda x : rank.rank(x, chord, settings["tuning"], settings["order"], settings["ranks"], settings["stringstarts"]))
+options.sort(key = lambda x : rank.rank(x, chord, tcsettings["tuning"], tcsettings["order"], tcsettings["ranks"], tcsettings["stringstarts"]))
 
 # Check the requested option is not too big
 if listpos >= len(options):
     err(16)
 
 # figure out what the output format is
-if settings["output_format"] == "TEXT":
+if tcsettings["output_format"] == "TEXT":
     output.text(
             options[listpos],
             name = filename,
@@ -143,7 +194,7 @@ if settings["output_format"] == "TEXT":
             )
 
 # TODO no options for where to put title yet
-elif settings["output_format"] == "PNG":
+elif tcsettings["output_format"] == "PNG":
     output.img(
             options[listpos],
             name = filename,
