@@ -247,140 +247,65 @@ def get_settings(settingsfile      = "settings.yml",
     if xtop:
         top = xtop
     
-    
-    # PROCESS VARIABLES HERE.
-    
+    # APPLY PRESETS: firstly remove -L tag
     if instrument_preset[-2:] == "-L":
         left = True
         instrument_preset = instrument_preset[0:-2]
-    
-    
-    # DEFINE INSTRUMENT PRESETS HERE
-    if instrument_preset in ["UKULELE", "UKULELE-SOPRANO", "UKULELE-REENTRANT",   \
-                             "UKULELE-SOPRANO-REENTRANT"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 12
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-D", "UKULELE-SOPRANO-D",                    \
-                             "UKULELE-D-REENTRANT", "UKULELE-SOPRANO-D-REENTRANT"]:
-        # Ukulele in D tuning: aDF#B
-        tuning    = [9, 2, 6, 11]
-        nfrets    = 12
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-CONCERT", "UKULELE-CONCERT-REENTRANT"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-CONCERT-LINEAR"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [0, 1, 2, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-TENOR", "UKULELE-TENOR-REENTRANT"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-TENOR-LINEAR"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [0, 1, 2, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-TENOR-CHICAGO",                             \
-                             "UKULELE-TENOR-CHICAGO-REENTRANT"]:
-        tuning    = [2, 7, 11, 4]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-TENOR-CHICAGO-LINEAR"]:
-        tuning    = [2, 7, 11, 4]
-        nfrets    = 15
-        nmute     = 0
-        important = 4
-        order     = [0, 1, 2, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-BARITONE", "UKULELE-BARITONE-REENTRANT"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 19
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-BARITONE-LINEAR"]:
-        tuning    = [7, 0, 4, 9]
-        nfrets    = 19
-        nmute     = 0
-        important = 4
-        order     = [0, 1, 2, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-BARITONE-CHICAGO",                          \
-                             "UKULELE-BARITONE-CHICAGO-REENTRANT"]:
-        tuning    = [2, 7, 11, 4]
-        nfrets    = 19
-        nmute     = 0
-        important = 4
-        order     = [2, 0, 1, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["UKULELE-BARITONE-CHICAGO-LINEAR"]:
-        tuning    = [2, 7, 11, 4]
-        nfrets    = 19
-        nmute     = 0
-        important = 4
-        order     = [0, 1, 2, 3]
-        stringstarts = [0, 0, 0, 0]
-    
-    if instrument_preset in ["GUITAR"]:
-        tuning    = [4, 9, 2, 7, 11, 4]
-        nfrets    = 19
-        nmute     = 2
-        important = 6
-        order     = [0, 1, 2, 3, 4, 5]
-        stringstarts = [0, 0, 0, 0, 0, 0]
-    
-    if instrument_preset in ["BANJO"]:
-        tuning       = [7, 2, 7, 11, 2]
-        nfrets       = 15
-        nmute        = 1
-        important    = 3 # usually not playing complex chords
-        order        = [4, 0, 1, 2, 3]
-        stringstarts = [5, 0, 0, 0, 0]
-        height       = 6 # so that there's space for the additional string
         
-    if instrument_preset in ["SAZ"]:
-        tuning       = [2, 7, 9]
-        nfrets       = 14
-        nmute        = 0
-        important    = 3
-        order        = [2, 0, 1]
-        stringstarts = [0, 0, 0]
+    # APPLY PRESETS: check for a file in presets/instruments.
+    script_directory = os.path.dirname(os.path.realpath(__file__))
+    preset_path = os.path.join(script_directory,
+                               "presets/instruments/" + instrument_preset + ".yml")
+    ymldict = {}
+    try:
+        with open(preset_path, "r") as file:
+            ymldict = yaml.load(file, Loader=yaml.FullLoader)
+    except FileNotFoundError:
+        # if there is no file with correct name, see if index can redirect
+        index_path = os.path.join(script_directory,
+                                  "presets/instruments/_index.yml")
+        with open(index_path, "r") as file:
+            index = yaml.load(file, Loader=yaml.FullLoader)
+            if instrument_preset in index.keys():
+                preset_path = os.path.join(script_directory,
+                                           ("presets/instruments/" +
+                                           index[instrument_preset] +
+                                           ".yml"))
+                try:
+                    with open(preset_path, "r") as file:
+                        ymldict = yaml.load(file, Loader=yaml.FullLoader)
+                except FileNotFoundError:
+                    pass
+
+    # if a settings file was found, its contents are now in ymldict.
+    keys = ymldict.keys()
+    if "tuning" in keys:
+        tuning = custom.interpret(ymldict["tuning"],
+                                  remove_duplicates = False)
+    if "nfrets" in keys:
+        nfrets = ymldict["nfrets"]
+    if "nmute" in keys:
+        nmute = ymldict["nmute"]
+    if "important" in keys:
+        important = ymldict["important"]
+    if "order" in keys:
+        order = ymldict["order"]
+    if "stringstarts" in keys:
+        stringstarts = ymldict["stringstarts"]
+    if "height" in keys:
+        height = ymldict["height"]
+    if "margin" in keys:
+        margin = ymldict["margin"]
+    if "head" in keys:
+        head = ymldict["head"]
+    if "string" in keys:
+        string = ymldict["string"]
+    if "press" in keys:
+        press = ymldict["press"]
+    if "muted" in keys:
+        muted = ymldict["muted"]
+    if "top" in keys:
+        top = ymldict["top"]
         
     
     # DEFINE RANKING PRESETS HERE

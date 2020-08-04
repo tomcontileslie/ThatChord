@@ -1,0 +1,6 @@
+tuning: D G B E
+nfrets: 15
+nmute: 0
+important: 4
+order: [0, 1, 2, 3]
+stringstarts: [0, 0, 0, 0]

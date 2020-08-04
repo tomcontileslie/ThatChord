@@ -1,0 +1,7 @@
+tuning: G D G B D
+nfrets: 15
+nmute: 1
+important: 3
+order: [4, 0, 1, 2, 3]
+stringstarts: [5, 0, 0, 0, 0]
+height: 6
