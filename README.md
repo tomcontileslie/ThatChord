@@ -64,7 +64,7 @@ Replacing `module-name` with the name of the module you need. re, os and sys sho
 To run ThatChord, navigate to your ThatChord folder and run `thatchord.py` with your chord request as argument:
 ```
 cd ~/Documents/ThatChord
-python3 thatchord.py Bbadd9(b5)/C:2
+python3 thatchord.py "Bbadd9(b5)/C:2"
 ```
 In general, chord requests are structured as `WX(Y)/Z:T` where:
 - `W` is a note, i.e. a letter `A-G` possibly followed by `b` or `#`
@@ -76,6 +76,9 @@ In general, chord requests are structured as `WX(Y)/Z:T` where:
 - (optional) `T` is a positive number. ThatChord returns the `T`th best option found. By default, `T` is set to 1
   (i.e. return the best option). If you are not satisfied with the diagram shown for `Cmin7`, for example, try
   running ThatChord again with `Cmin7:2` to see the next best option.
+  
+Since chords often contain special characters, you will most likely need to surround the chord request with
+quotation marks, as in the example above.
 
 Additionally, running:
 ```
@@ -89,6 +92,10 @@ python3 thatchord.py "CUSTOM C Eb G"
 ```
 will return a Cm chord. Make sure you add quotation marks so the notes are not interpreted as separate flags. That
 being said, most separators work for custom input: `python3 thatchord.py CUSTOMC,Eb,G` requires no quotes.
+
+For custom input, note that the order of notes is important. Enter the most important ones first, and for an instrument
+like guitar or banjo you should either set the first note in the list to be the bass note, or choose a less bass-heavy
+ranking preset than the guitar and banjo presets.
 
 A number of flags can be specified when running ThatChord via the command line. Run:
 ```
