@@ -38,11 +38,65 @@ ThatChord can also output equally simplistic, and also rather lightweight, PNG i
 
 These weigh a handful of kilobytes each at most.
 
-## Using ThatChord
+## Installing and Using ThatChord
 
-You can either run ThatChord manually in your favourite Python interpreter, or fiddle with the setup once and then automate the script via the command line.
+ThatChord runs by default via the Unix command line (though you can configure it to run via input
+in the Python console if you prefer).
+The default assumption is that the ThatChord folder lies in your Documents folder.
+Install ThatChord there, or anywhere else, by cloning the repo:
+```
+cd ~/Documents
+git clone https://github.com/tomcontileslie/ThatChord.git ThatChord
+```
+Also ensure you have Python3 installed, and you have the following modules:
+- re
+- os
+- sys
+- Pillow
+- PyYAML
 
-More information on both of these options, including a step-by-step setup guide for beginners, is available
+If you are missing any of the above modules, run:
+```
+python3 -m install module-name
+```
+Replacing `module-name` with the name of the module you need. re, os and sys should be available by default.
+
+To run ThatChord, navigate to your ThatChord folder and run `thatchord.py` with your chord request as argument:
+```
+cd ~/Documents/ThatChord
+python3 thatchord.py Bbadd9(b5)/C:2
+```
+In general, chord requests are structured as `WX(Y)/Z:T` where:
+- `W` is a note, i.e. a letter `A-G` possibly followed by `b` or `#`
+- (optional) `X` is a chord quality such as  `min7` or `11`. A large list of qualities are supported.
+- (optional) `Y` is a list of one or more alterations which sharpen or flatten a given note in the chord.
+  To sharpen the fifth, type `#5`. Concatenate the alterations to have several: `Cm7(b5b7)`.
+- (optional) `Z` is a bass note. On guitar and banjo, ThatChord favours options where the bass note is
+  played on the lowest non-muted string.
+- (optional) `T` is a positive number. ThatChord returns the `T`th best option found. By default, `T` is set to 1
+  (i.e. return the best option). If you are not satisfied with the diagram shown for `Cmin7`, for example, try
+  running ThatChord again with `Cmin7:2` to see the next best option.
+
+Additionally, running:
+```
+python3 thatchord.py SETTINGS
+```
+will open your settings file so you can change the instrument ThatChord outputs diagrams for (default is ukulele).
+
+For chords that don't have nice names, you can specify the notes making up the chord in a custom format. For example:
+```
+python3 thatchord.py "CUSTOM C Eb G"
+```
+will return a Cm chord. Make sure you add quotation marks so the notes are not interpreted as separate flags. That
+being said, most separators work for custom input: `python3 thatchord.py CUSTOMC,Eb,G` requires no quotes.
+
+A number of flags can be specified when running ThatChord via the command line. Run:
+```
+python3 thatchord.py --help
+```
+for more information.
+
+More information, including a step-by-step setup guide for beginners, is available
 on the [ThatChord wiki](https://github.com/tomcontileslie/ThatChord/wiki).
 
 ## Contributing to ThatChord
