@@ -16,6 +16,7 @@
 ###############################################################################
 
 import os
+import platform # To differentiate between platforms
 # import error messages
 from errors import err
 
@@ -181,7 +182,10 @@ def text(
     
     # If asked to splash, do so now that the file is saved.
     if output_method == "SPLASH":
-        os.system("open " + filename)
+        if platform.system() == "Linux":
+            os.system("xdg-open " + filename)
+        else:
+            os.system("open " + filename)
     
     # If not asked to do anything, return value.
     if output_method == "NONE":

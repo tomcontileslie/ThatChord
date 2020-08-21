@@ -64,6 +64,7 @@ request =                        "Gadd9"
 
 # change current directory
 import os
+import platform # To differentiate between platforms
 
 # Load other files
 import interpret
@@ -140,7 +141,10 @@ if request.upper() == "SETTINGS":
     # Typing SETTINGS opens the settings file.
     script_directory = os.path.dirname(os.path.realpath(__file__))
     settings_path = os.path.join(script_directory, "settings.yml")
-    os.system("open " + settings_path)
+    if platform.system() == "Linux":
+        os.system("xdg-open " + settings_path)
+    else:
+        os.system("open " + settings_path)
     exit()
 
 # Check whether a specific position in the list was requested. If not, 0 is
