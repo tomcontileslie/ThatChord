@@ -2,7 +2,12 @@
 
 **Created by Tom Conti-Leslie: [tomcontileslie.com](http://tomcontileslie.com).**
 
-**I am grateful for the helpful contributions of Sophie Purkis Charters, [@joshwd36](https://github.com/joshwd36) and [Georg Wölflein](https://github.com/georgw777).**
+I am grateful for the helpful contributions of:
+
+- Sophie Purkis Charters
+- [@joshwd36](https://github.com/joshwd36)
+- [Georg Wölflein](https://github.com/georgw777)
+- [Reinis Cirpons](https://github.com/reiniscirpons)
 
 **These files are distributed under a Creative Commons Share Alike license.**
 
@@ -52,6 +57,7 @@ Also ensure you have Python3 installed, and you have the following modules:
 - re
 - os
 - sys
+- platform
 - Pillow
 - PyYAML
 
