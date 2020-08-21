@@ -19,6 +19,9 @@
 # import error messages
 from errors import err
 
+# import ranking functions
+import rank
+
 def increment(maxes, current):
     """
     Helper function for incrementing a list of indices, 'current', by
@@ -35,15 +38,40 @@ def increment(maxes, current):
             return
         current[i] = 0
 
-def find(chord, tuning, nfrets, stringstarts, nmute = 0, important = 0):
+def insert(options, frets, index,
+           # ranking parameters
+           chord = [], tuning = [], order = [], ranks = [], stringstarts = []):
+    """
+    N.B. modifies options in place.
+    Inserts frets into options if the rank of frets is lower than some of the
+    current options. Pushes the worse options out of the list.
+    """
+    # First calculate rank of frets
+    r = rank.rank(frets, chord, tuning, order, ranks, stringstarts)
+    tup = (frets, r)
+    # start at worse end of list, move all the way to where r is in order
+    i = len(options)
+    while i > 0 and r < options[i][1]:
+        i -= 1
+    if len(options) < index - 1:
+        pass
+    
+
+def find(chord, nmute = 0, important = 0, index = 0, nfrets = 12,
+         # Below are ranking args (some are also used for finding)
+         tuning = [], order = [], ranks = [], stringstarts = []):
     """
     This function is called in the main file, thatchord.py.
     
     In this function, all possible fret positions are considered on each string
     and are compiled into 'valids'. All positions which give any note
     in the chord are maintained. This has the disadvantage of considering, e.g.
-    4 copies of C as a valid configuration for the chord C major. The second
-    part of the function filters these out.
+    4 copies of C as a valid configuration for the chord C major.
+    
+    The second part of this function tests every possible configuration and
+    calculates their ranks. It maintains a short list of the best options
+    and then outputs the 'index'th best option found (default 0, i.e. best opt)
+    To avoid recalculating ranks, options are stored as tuples.
     
     chord is a list of notes.
     
