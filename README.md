@@ -37,9 +37,9 @@ Strings such as `C`, `Fadd9` and `Bmin11(b5)/C` are all recognised and on guitar
    | | | | | |        | | | | | |        | | | | | |  
 ```
 ThatChord can also output equally simplistic, and also rather lightweight, PNG images:
-| For ukulele                         |  For guitar                  |
-| :----------------------------------:|:----------------------------:|
-| ![](diagrams/example01.png)         | ![](diagrams/example03.png)  |
+| For ukulele                         |  For guitar                  | For banjo                    |
+| :----------------------------------:|:----------------------------:|:----------------------------:|
+| ![](diagrams/example01.png)         | ![](diagrams/example03.png)  | ![](diagrams/example04.png)  |
 
 These weigh a handful of kilobytes each at most.
 
