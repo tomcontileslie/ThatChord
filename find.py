@@ -38,26 +38,30 @@ def increment(maxes, current):
             return
         current[i] = 0
 
-def insert(options, frets, index,
-           # ranking parameters
-           chord = [], tuning = [], order = [], ranks = [], stringstarts = []):
+def insert(options, frets, index, r):
     """
     N.B. modifies options in place.
     Inserts frets into options if the rank of frets is lower than some of the
     current options. Pushes the worse options out of the list.
+    r is the calculated rank of the option 'frets'.
     """
-    # First calculate rank of frets
-    r = rank.rank(frets, chord, tuning, order, ranks, stringstarts)
     tup = (frets, r)
     # start at worse end of list, move all the way to where r is in order
-    i = len(options)
-    while i > 0 and r < options[i][1]:
+    l = len(options)
+    i = l
+    while i > 0 and r < options[i - 1][1]:
         i -= 1
-    if len(options) < index - 1:
-        pass
-    
+    if l < index:
+        # in this case, options has not yet reached full size. Just add the opt
+        options.insert(i, tup)
+    elif i < l:
+        # in this case, options is full. Add only if our option beats at least
+        # one thing.
+        options.insert(i, tup)
+        # push out the worst retained option.
+        options.pop()
 
-def find(chord, nmute = 0, important = 0, index = 0, nfrets = 12,
+def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
          # Below are ranking args (some are also used for finding)
          tuning = [], order = [], ranks = [], stringstarts = []):
     """
@@ -135,9 +139,12 @@ def find(chord, nmute = 0, important = 0, index = 0, nfrets = 12,
         
         # if both conditions are satisfied, store the option.
         if bool_mute and bool_impo:
-            options.append(attempt)
+            r = rank.rank(attempt, chord, tuning, order, ranks, stringstarts)
+            insert(options, attempt, index, r)
         
         # increment the current attempt to the next possibility.
         increment(maxes, current)
     
-    return options
+    # return the worst option in the list of options, which is at the index
+    # requested (default is for options to have 1 entry).
+    return options[-1][0]

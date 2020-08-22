@@ -143,9 +143,9 @@ if request.upper() == "SETTINGS":
     os.system("open " + settings_path)
     exit()
 
-# Check whether a specific position in the list was requested. If not, 0 is
-# default.
-listpos = 0
+# Check whether a specific position in the list was requested. If not, 1 is
+# default (best option).
+listpos = 1
 
 if ":" in request:
     colon_positions = [i for i, x in enumerate(request) if x == ":"]
@@ -153,7 +153,7 @@ if ":" in request:
         err("colons")
     # if we made it here then there must be exactly one colon
     try:
-        listpos = int(request[colon_positions[0] + 1:]) - 1
+        listpos = int(request[colon_positions[0] + 1:])
     except ValueError:
         err(15)
     # remove the colon bit from the request
@@ -173,20 +173,22 @@ else:
     title = request
     filename = request
 
-# Find the list of chords.
-options = find.find(chord, tcsettings["tuning"], tcsettings["nfrets"], tcsettings["stringstarts"], tcsettings["nmute"], tcsettings["important"])
+# Find the chord at the requested listpos.
+solution = find.find(chord,
+                     nmute = tcsettings["nmute"],
+                     important = tcsettings["important"],
+                     index = listpos,
+                     nfrets = tcsettings["nfrets"],
+                     tuning = tcsettings["tuning"],
+                     order = tcsettings["order"],
+                     ranks = tcsettings["ranks"],
+                     stringstarts = tcsettings["stringstarts"])
 
-# Sort the options using rank
-options.sort(key = lambda x : rank.rank(x, chord, tcsettings["tuning"], tcsettings["order"], tcsettings["ranks"], tcsettings["stringstarts"]))
-
-# Check the requested option is not too big
-if listpos >= len(options):
-    err(16)
 
 # figure out what the output format is
 if tcsettings["output_format"] == "TEXT":
     output.text(
-            options[listpos],
+            solution,
             name = filename,
             title = title,
             **kwgrargs,
@@ -196,7 +198,7 @@ if tcsettings["output_format"] == "TEXT":
 # TODO no options for where to put title yet
 elif tcsettings["output_format"] == "PNG":
     output.img(
-            options[listpos],
+            solution,
             name = filename,
             title = title,
             **kwgrargs,
