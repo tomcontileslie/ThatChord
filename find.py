@@ -38,6 +38,27 @@ def increment(maxes, current):
             return
         current[i] = 0
 
+def smart_increment(maxes, current, chordset, stringset):
+    # Our current attempt is current. How many notes does that attempt play?
+    # How many notes does our chord need? If there is a gap of k notes between
+    # the two, then we need to change at least the first k counters.
+    k = len(chordset) - len(stringset)
+    # if n is 0 or 1 then we don't need to skip anything; just increment
+    # normally.
+    k = max(k - 1, 0)
+    for i in range(k):
+        current[i] = 0
+
+    for i in range(k, len(maxes)):
+        if not current[i] == maxes[i] - 1:
+            current[i] += 1
+            break
+        current[i] = 0
+    # the counter i will now be set at the number of the rightmost string
+    # changed. Return this to the main loop to update the chordset.
+    return i
+            
+
 def insert(options, frets, index, r):
     """
     N.B. modifies options in place.
@@ -92,6 +113,7 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
     valids = []
     if important == 0:
         important = len(chord)
+    chordset = set(chord[:important])
     
     # start by finding all valid positions.
     for i in range(n):
@@ -114,6 +136,12 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
     # options.
     current = [0] * n
     options = []
+    
+    # populate list of note multiplicities. mults[i] is equal to the number of
+    # distinct strings playing i.
+    mults = [0] * 12
+    for i in range(n):
+        pass
     
     # want to iterate until we see 000..0 again
     first_value = [0] * n
