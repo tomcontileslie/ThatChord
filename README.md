@@ -45,6 +45,9 @@ These weigh a handful of kilobytes each at most.
 
 ## Installing and Using ThatChord
 
+If you are a beginner using a Mac, you may wish to check out the more detailed [beginner step-by-step
+setup guide](https://github.com/tomcontileslie/ThatChord/wiki/Beginners) on the wiki.
+
 ThatChord runs by default via the Unix command line (though you can configure it to run via input
 in the Python console if you prefer).
 The default assumption is that the ThatChord folder lies in your Documents folder.
@@ -109,8 +112,7 @@ python3 thatchord.py --help
 ```
 for more information.
 
-More information, including a step-by-step setup guide for beginners, is available
-on the [ThatChord wiki](https://github.com/tomcontileslie/ThatChord/wiki).
+More information is available on the [ThatChord wiki](https://github.com/tomcontileslie/ThatChord/wiki).
 
 ## Contributing to ThatChord
 
