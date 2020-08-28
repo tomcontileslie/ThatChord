@@ -67,7 +67,9 @@ def insert(options, frets, index, r):
 
 def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
          # Below are ranking args (some are also used for finding)
-         tuning = [], order = [], ranks = [], stringstarts = []):
+         tuning = [], order = [], ranks = [], stringstarts = [],
+         # args to activate for testing
+         keep_full_list = False):
     """
     This function is called in the main file, thatchord.py.
     
@@ -148,6 +150,8 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
     
     # FOR TESTING PURPOSES - function attribute
     find.count = 0
+    if keep_full_list:
+        find.full_list = []
     
     while first_time or current != first_value:
         first_time = False
@@ -171,7 +175,10 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
         if bool_mute and bool_impo:
             r = rank.rank(attempt, chord, tuning, order, ranks, stringstarts)
             insert(options, attempt, index, r)
+            # FOR TESTING PURPOSES
             find.count += 1
+            if keep_full_list:
+                find.full_list.append(attempt.copy())
         
         # intelligently increment the current attempt to the next possibility.
         updated = smart_increment(maxes, current, remaining)
@@ -184,7 +191,7 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
             if attempt[i] != -1:
                 old_note = (attempt[i] + tuning[i]) % 12
                 mults[old_note] -= 1
-                if mults[old_note] == 0:
+                if mults[old_note] == 0 and old_note in chordset:
                     # we have lost all copies of this old note. It is now remaining
                     remaining.add(old_note)
             # update that entry of the attempt to the new value
@@ -196,7 +203,7 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
             if attempt[i] != -1:
                 new_note = (attempt[i] + tuning[i]) % 12
                 mults[new_note] += 1
-                if mults[new_note] == 1:
+                if mults[new_note] == 1 and new_note in chordset:
                     # then we have just re-introduced this note into our set
                     # of currently played notes. It is no longer remaining.
                     remaining.remove(new_note)
