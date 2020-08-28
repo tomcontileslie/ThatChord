@@ -31,7 +31,6 @@ from errors import ChordError
 import interpret
 import find
 import settings
-import rank
 import output
 
 class TestInterpret:
@@ -91,45 +90,72 @@ class TestFind:
     def test_find_smallinput(self):
         # Only one way of playing Cmaj on uke neck with 3 frets
         assert find.find([0, 4, 7],
-                         [7, 0, 4, 9],
-                         3,
-                         [0, 0, 0, 0]) == [[0, 0, 0, 3]]
+                         nmute = 0,
+                         important = 0,
+                         index = 1,
+                         nfrets = 3,
+                         tuning = [7, 0, 4, 9],
+                         order = [2, 0, 1, 3],
+                         ranks = [1, 2, 3, 1, 0, 0, 0, 0, 0],
+                         stringstarts = [0, 0, 0, 0]) == [0, 0, 0, 3]
+        assert find.find.count == 1
     
     # CHECK NO CHORDS ARE PROPOSED WITH FRETS BELOW STRINGSTARTS
     def test_find_stringstarts(self):
-        options = find.find([7, 2, 9],
-                            [7, 2, 7, 11, 2],
-                            15,
-                            [5, 0, 0, 0, 0])
-        for opt in options:
+        find.find([7, 2, 9],
+                  nmute = 0,
+                  important = 0,
+                  index = 1,
+                  nfrets = 15,
+                  tuning = [7, 2, 7, 11, 2],
+                  order = [4, 0, 1, 2, 3],
+                  ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  stringstarts = [5, 0, 0, 0, 0],
+                  keep_full_list = True)
+        for opt in find.find.full_list:
             assert opt[0] >= 5
     
     # CHECK THERE IS AN ERROR IF NO CHORDS ARE POSSIBLE
     def test_find_nooptions(self):
         with pytest.raises(ChordError):
             find.find([0, 4, 7],
-                      [7, 0, 4, 9],
-                      2,
-                      [0, 0, 0, 0])
+                      nmute = 0,
+                      important = 0,
+                      index = 1,
+                      nfrets = 2,
+                      tuning = [7, 0, 4, 9],
+                      order = [2, 0, 1, 3],
+                      ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      stringstarts = [0, 0, 0, 0])
     
     # BASIC CHECK HIGH UP NECK
     def test_find_highneck(self):
-        assert [10, 9, 8, 8] in find.find(interpret.interpret("F"),
-                                          [7, 0, 4, 9],
-                                          12,
-                                          [0, 0, 0, 0])
-    
+        find.find(interpret.interpret("F"),
+                  nmute = 0,
+                  important = 0,
+                  index = 1,
+                  nfrets = 12,
+                  tuning = [7, 0, 4, 9],
+                  order = [2, 0, 1, 3],
+                  ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  stringstarts = [0, 0, 0, 0],
+                  keep_full_list = True)
+        assert [10, 9, 8, 8] in find.find.full_list
+
     # CHECK THAT IF MUTE IS ALLOWED, MUTED CHORDS ARE FOUND
     def test_find_mute_01(self):
         def muteworks():
-            options = find.find([0, 4, 7],
-                                [4, 9, 2, 7, 11, 4],
-                                15,
-                                [0, 0, 0, 0, 0, 0],
-                                nmute = 2,
-                                important = 6
-                                )
-            for opt in options:
+            find.find([0, 4, 7],
+                      nmute = 2,
+                      important = 6,
+                      index = 1,
+                      nfrets = 15,
+                      tuning = [4, 9, 2, 7, 11, 4],
+                      order = [0, 1, 2, 3, 4, 5],
+                      ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      stringstarts = [0, 0, 0, 0, 0, 0],
+                      keep_full_list = True)
+            for opt in find.find.full_list:
                 if opt[0] == -1 and opt[1] == -1:
                     return True
             return False
@@ -138,14 +164,17 @@ class TestFind:
     # CHECK THAT IF MUTE IS NOT ALLOWED, MUTED CHORDS ARE NOT FOUND
     def test_find_mute_02(self):
         def muteworks():
-            options = find.find([0, 4, 7],
-                                [4, 9, 2, 7, 11, 4],
-                                15,
-                                [0, 0, 0, 0, 0, 0],
-                                nmute = 0,
-                                important = 6
-                                )
-            for opt in options:
+            find.find([0, 4, 7],
+                      nmute = 0,
+                      important = 6,
+                      index = 1,
+                      nfrets = 15,
+                      tuning = [4, 9, 2, 7, 11, 4],
+                      order = [0, 1, 2, 3, 4, 5],
+                      ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      stringstarts = [0, 0, 0, 0, 0, 0],
+                      keep_full_list = True)
+            for opt in find.find.full_list:
                 if opt[0] == -1 and opt[1] == -1:
                     return False
             return True
@@ -153,12 +182,33 @@ class TestFind:
     
     # CHECK THAT ONLY C'S WORKS FOR CMAJ IF ONLY 1 NOTE IS IMPORTANT
     def test_find_smallimportant(self):
-        assert [5, 0, 8, 3] in find.find([0, 4, 7],
-                                         [7, 0, 4, 9],
-                                         12,
-                                         [0, 0, 0, 0],
-                                         nmute = 0,
-                                         important = 1)
+        find.find(interpret.interpret("C"),
+                  nmute = 0,
+                  important = 1,
+                  index = 1,
+                  nfrets = 12,
+                  tuning = [7, 0, 4, 9],
+                  order = [2, 0, 1, 3],
+                  ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  stringstarts = [0, 0, 0, 0],
+                  keep_full_list = True)
+        assert [5, 0, 8, 3] in find.find.full_list
+        
+    # CHECK THAT THE COMMON CMAJ ON UKULELE FINDS ALL 90 OPTIONS
+    def test_find_allpossibilities(self):
+        find.find(interpret.interpret("C"),
+                  nmute = 0,
+                  important = 0,
+                  index = 1,
+                  nfrets = 12,
+                  tuning = [7, 0, 4, 9],
+                  order = [2, 0, 1, 3],
+                  ranks = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  stringstarts = [0, 0, 0, 0])
+        assert find.find.count == 90
+    
+    # TODO maybe make a dict of lots of different counts here to test
+    # esp. with different importance and muting settings
 
 class TestRank:
     
@@ -167,40 +217,32 @@ class TestRank:
     # reasonable results for basic chords with an obvious best choice.
     # TODO change settings so the entries can be overwritten.
     def test_rank_basicuke_01(self):
-        # tests that C major is what you would expect.
+        # tests that C major is what you would expect.        
         ukesettings, _, _ = settings.get_settings(instrument_preset = "UKULELE",
                                                   ranking_preset = "UKULELE")
-        options = find.find([0, 4, 7],
-                            ukesettings["tuning"],
-                            ukesettings["nfrets"],
-                            ukesettings["stringstarts"],
-                            ukesettings["nmute"],
-                            ukesettings["important"])
-        options.sort(key = lambda x : rank.rank(x,
-                                                [0, 4, 7],
-                                                ukesettings["tuning"],
-                                                ukesettings["order"],
-                                                ukesettings["ranks"],
-                                                ukesettings["stringstarts"]))
-        assert options[0] == [0, 0, 0, 3]
+        assert find.find(interpret.interpret("C"),
+                         nmute = ukesettings["nmute"],
+                         important = ukesettings["important"],
+                         index = 1,
+                         nfrets = ukesettings["nfrets"],
+                         tuning = ukesettings["tuning"],
+                         order = ukesettings["order"],
+                         ranks = ukesettings["ranks"],
+                         stringstarts = ukesettings["stringstarts"]) == [0, 0, 0, 3]
     
     def test_rank_basicuke_02(self):
-        # tests that C major is what you would expect.
+        # tests that A minor is what you would expect.        
         ukesettings, _, _ = settings.get_settings(instrument_preset = "UKULELE",
                                                   ranking_preset = "UKULELE")
-        options = find.find([9, 4, 0],
-                            ukesettings["tuning"],
-                            ukesettings["nfrets"],
-                            ukesettings["stringstarts"],
-                            ukesettings["nmute"],
-                            ukesettings["important"])
-        options.sort(key = lambda x : rank.rank(x,
-                                                [9, 4, 0],
-                                                ukesettings["tuning"],
-                                                ukesettings["order"],
-                                                ukesettings["ranks"],
-                                                ukesettings["stringstarts"]))
-        assert options[0] == [2, 0, 0, 0]
+        assert find.find(interpret.interpret("Am"),
+                         nmute = ukesettings["nmute"],
+                         important = ukesettings["important"],
+                         index = 1,
+                         nfrets = ukesettings["nfrets"],
+                         tuning = ukesettings["tuning"],
+                         order = ukesettings["order"],
+                         ranks = ukesettings["ranks"],
+                         stringstarts = ukesettings["stringstarts"]) == [2, 0, 0, 0]
     
     # TODO test individual ranking funcs (require that new rank funcs be added
     # at end of list to avoid disrupting order of existing coeffs)

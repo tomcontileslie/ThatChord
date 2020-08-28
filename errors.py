@@ -136,6 +136,8 @@ def err(reason):
         raise ChordError(out)
     
     # REASON 16: LIST INDEX REQUESTED TOO HIGH
+    # N.B. deprecated since faster restructure which, for a too high index,
+    # simply returns the worst we've got.
     if reason in ("fewoptions", 16):
         out = """You have requested a solution number which is greater than"""\
             + """ the number of solutions found. Please request a lower """   \
