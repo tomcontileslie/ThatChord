@@ -73,18 +73,25 @@ Replacing `module-name` with the name of the module you need. re, os and sys sho
 To run ThatChord, navigate to your ThatChord folder and run `thatchord.py` with your chord request as argument:
 ```
 cd ~/Documents/ThatChord
-python3 thatchord.py "Bbadd9(b5)/C:2"
+python3 thatchord.py "Bbadd9(b5)/C@4:2"
 ```
-In general, chord requests are structured as `WX(Y)/Z:T` where:
+In general, chord requests are structured as `WX(Y)/Z@V:T` where:
 - `W` is a note, i.e. a letter `A-G` possibly followed by `b` or `#`
 - (optional) `X` is a chord quality such as  `min7` or `11`. A large list of qualities are supported.
 - (optional) `Y` is a list of one or more alterations which sharpen or flatten a given note in the chord.
   To sharpen the fifth, type `#5`. Concatenate the alterations to have several: `Cm7(b5b7)`.
 - (optional) `Z` is a bass note. On guitar and banjo, ThatChord favours options where the bass note is
   played on the lowest non-muted string.
+- (optional) `V` is the lowest fret that every non-muted string must be played at. Default is `0`.
+  This option is helpful if you want to see chords higher up on the neck.
 - (optional) `T` is a positive number. ThatChord returns the `T`th best option found. By default, `T` is set to 1
   (i.e. return the best option). If you are not satisfied with the diagram shown for `Cmin7`, for example, try
   running ThatChord again with `Cmin7:2` to see the next best option.
+
+Combining all of the optional parts of the request into the above example, `Bbadd9(b5)/C@4:2`, will ask for:
+
+**The second best way of playing a B flat added ninth chord, with a flattened fifth, over a bass note of C,
+where every finger is placed at least at the 4th fret.**
   
 Since chords often contain special characters, you will most likely need to surround the chord request with
 quotation marks, as in the example above.
