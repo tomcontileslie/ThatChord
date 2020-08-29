@@ -68,6 +68,8 @@ def insert(options, frets, index, r):
 def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
          # Below are ranking args (some are also used for finding)
          tuning = [], order = [], ranks = [], stringstarts = [],
+         # fret specification
+         fretspec = 0,
          # args to activate for testing
          keep_full_list = False):
     """
@@ -112,7 +114,7 @@ def find(chord, nmute = 0, important = 0, index = 1, nfrets = 12,
         valids.append([])
         if i < nmute:
             valids[i].append(-1)
-        for j in range(stringstarts[i], nfrets + 1):
+        for j in range(max(stringstarts[i], fretspec), nfrets + 1):
             if (tuning[i] + j) % 12 in chord:
                 valids[i].append(j)
     

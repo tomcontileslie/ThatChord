@@ -169,5 +169,29 @@ def err(reason):
             + """ saving; custom_instrument; custom_ranking; graphical_p"""   \
             + """arameters."""
         raise ChordError(out)
+        
+    # REASON 21: TOO MANY @ SIGNS IN INPUT
+    if reason in ("ats", 21):
+        out = """There are too many @ signs in your input. Adding an "@" """  \
+            + """sign after your chord sets a minimum fret height that the""" \
+            + """ chord must be played at. There must be at most one "a\""""  \
+            + """ sign in the input."""
+        raise ChordError(out)
+    
+    # REASON 22: CANNOT UNDERSTAND FRET SPECIFICATION
+    if reason in ("afterat", 22):
+        out = """You have requested a minimum fret height by using an @ """   \
+            + """sign, but I don't understand what fret you have requested."""\
+            + """ Please ensure that the @ sign is followed by an integer, """\
+            + """e.g. 'Cmaj7@5'. The number after the @ sign can optionally"""\
+            + """be followed by a colon, e.g. 'Cmaj7@5:2'."""
+        raise ChordError(out)
+    
+    if reason in ("highfretspec", 23):
+        out = """You have requested a minimal fret height which is greater """\
+            + """than the number of frets on your instrument. Please enter """\
+            + """a lower number after the @ symbol, or increase your number"""\
+            + """ of frets."""
+        raise ChordError(out)
     
     raise ChordError(str(reason))

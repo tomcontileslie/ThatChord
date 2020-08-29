@@ -163,6 +163,22 @@ if ":" in request:
     # remove the colon bit from the request
     request = request[:colon_positions[0]]
     
+# Check whether a minimum fret height was specified (fretspec).
+at = 0
+
+if "@" in request:
+    at_positions = [i for i, x in enumerate(request) if x == "@"]
+    if len(at_positions) > 1:
+        err("ats")
+    # if we made it here then there must be exactly one @
+    try:
+        at = int(request[at_positions[0] + 1:])
+    except ValueError:
+        err(22)
+    # remove the colon bit from the request
+    request = request[:at_positions[0]]
+if at > tcsettings["nfrets"]:
+    err(23)
 
 if request[0:6].upper() == "CUSTOM":
     # custom note by note input triggered. Code in "custom.py".
@@ -186,7 +202,8 @@ solution = find.find(chord,
                      tuning = tcsettings["tuning"],
                      order = tcsettings["order"],
                      ranks = tcsettings["ranks"],
-                     stringstarts = tcsettings["stringstarts"])
+                     stringstarts = tcsettings["stringstarts"],
+                     fretspec = at)
 
 
 # figure out what the output format is
