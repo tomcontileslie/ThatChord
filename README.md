@@ -1,3 +1,5 @@
+![](diagrams/banner.png)
+
 # ThatChord: A Python script for chord diagrams
 
 **Created by Tom Conti-Leslie: [tomcontileslie.com](http://tomcontileslie.com).**
