@@ -5,4 +5,5 @@ __pycache__/
 *.app
 diagrams/*.png
 !diagrams/example*.png
+!diagrams/banner.png
 diagrams/*.txt
