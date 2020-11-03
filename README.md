@@ -45,6 +45,34 @@ ThatChord can also output equally simplistic, and also rather lightweight, PNG i
 
 These weigh a handful of kilobytes each at most.
 
+### ThatChord is smarter than a chord dictionary.
+
+Note that unlike a number of available chord finders, which have a database of common chord fingerings,
+ThatChord calculates the best way to play the chord you requested *on the fly*, using the settings you
+have configured regarding your number of strings, tuning, and your fingering
+preferences (e.g. how much do you value using few fingers over avoiding stretching your fingers very far?)
+
+When handling a request, ThatChord *literally considers every imaginable way* of playing your chord,
+and then keeps only the best options.
+The "best options" are whatever you want them to be, and you can tweak the coefficients of the ranking
+algorithm to your liking. Don't like the option ThatChord returned for a given chord? Not to worry.
+You can ask for the second best, the third best, the 100th best... And you can change your ranking
+algorithm, or ask for the chord to be played above a certain fret.
+For one chord on ukulele, ThatChord's usually listed about 70 different fingerings.
+On guitar, it's closer to 10000.
+Are most of these options terrible? Yes. But they're there if you need them.
+
+The downside of this is it can take up to two seconds to find, and then render, your request if you're
+asking for a complicated chord on a many-stringed instrument. The advantage, though, is that this program
+doesn't need people to keep adding possible fingerings to
+some massive file. That would make for a fast program, but would never contain every possibility.
+The only dictionary file that needs improvement in ThatChord is its [quality dictionary](dicts.py),
+which allows it to accurately interpret more input strings (like "dim7", "5", "add9", ...).
+Everything else, it already knows.
+
+So while you're here, add a couple funky chord quality strings to the list, and then enjoy the
+endless options ThatChord offers!
+
 ## Installing and Using ThatChord
 
 If you are a beginner using a Mac, you may wish to check out the more detailed [beginner step-by-step
