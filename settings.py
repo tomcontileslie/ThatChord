@@ -317,6 +317,9 @@ def get_settings(settingsfile      = "settings.yml",
     
     if ranking_preset in ["BANJO"]:
         ranks = [2, 1, 3, 0, 1, 0, 3, 2, 1]
+
+    if ranking_preset in ["MANDOLIN"]:
+        ranks = [1, 2, 3, 1, 0, 0, 0, 0, 0]
     
     
     # SENSE CHECKING FOR I/O FORMATS
