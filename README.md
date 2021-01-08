@@ -86,21 +86,13 @@ Install ThatChord there, or anywhere else, by cloning the repo:
 cd ~/Documents
 git clone https://github.com/tomcontileslie/ThatChord.git ThatChord
 ```
-Also ensure you have Python3 installed, and you have the following modules:
-- re
-- os
-- sys
-- platform
-- Pillow
-- PyYAML
 
-If you are missing any of the above modules, run:
+To ensure all necessary Python modules are installed, run in your ThatChord directory:
 ```
-python3 -m install module-name
+python3 -m pip install -r requirements.txt
 ```
-Replacing `module-name` with the name of the module you need. re, os and sys should be available by default.
 
-To run ThatChord, navigate to your ThatChord folder and run `thatchord.py` with your chord request as argument:
+To run ThatChord, navigate to your ThatChord directory and run `thatchord.py` with your chord request as argument:
 ```
 cd ~/Documents/ThatChord
 python3 thatchord.py "Bbadd9(b5)/C@4:2"
