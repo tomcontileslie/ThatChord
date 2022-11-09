@@ -125,8 +125,6 @@ elif tcsettings["input_type"] == "TERMINAL":
 
     args = parser.parse_args()
     
-    #print("args were:",type(args),args)
-
     request = args.request[0]
 
     # populate dict with kwargs
@@ -155,8 +153,6 @@ if request.upper() == "SETTINGS":
 # Check whether a specific position in the list was requested. If not, 1 is
 # default (best option).
 listpos = 1
-
-print ("request: ",request)
 
 if ":" in request:
     colon_positions = [i for i, x in enumerate(request) if x == ":"]
@@ -195,7 +191,7 @@ if request[0:6].upper() == "CUSTOM":
     filename = request
     
 elif args.controlfreak:#don't try and interpret but we need to provide the data 
-    chord = eval(args.controlfreak) #i think this doesn't matter
+    chord = eval(args.controlfreak) #might be unnecessary
     title = request[6:]
     filename = request
    
