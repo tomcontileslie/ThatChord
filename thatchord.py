@@ -120,7 +120,12 @@ elif tcsettings["input_type"] == "TERMINAL":
     parser.add_argument("-d", "--directory", nargs = "?", type = str,
                         help = "directory to save diagrams")
 
+    parser.add_argument("-cf", "--controlfreak", nargs = "?", type = str,
+                        help = "control freak mode where you specify solution in the command line")
+
     args = parser.parse_args()
+    
+    #print("args were:",type(args),args)
 
     request = args.request[0]
 
@@ -150,6 +155,8 @@ if request.upper() == "SETTINGS":
 # Check whether a specific position in the list was requested. If not, 1 is
 # default (best option).
 listpos = 1
+
+print ("request: ",request)
 
 if ":" in request:
     colon_positions = [i for i, x in enumerate(request) if x == ":"]
@@ -186,6 +193,12 @@ if request[0:6].upper() == "CUSTOM":
     # title removes CUSTOM but adds exclamation mark to indicate custom.
     title = "!" + request[6:]
     filename = request
+    
+elif args.controlfreak:#don't try and interpret but we need to provide the data 
+    chord = eval(args.controlfreak) #i think this doesn't matter
+    title = request[6:]
+    filename = request
+   
 else:
     # Standard input. Use normal function.
     chord = interpret.interpret(request)
@@ -194,7 +207,9 @@ else:
     filename = request
 
 # Find the chord at the requested listpos.
-solution = find.find(chord,
+if args.controlfreak: solution = eval(args.controlfreak)
+else:
+	solution = find.find(chord,
                      nmute = tcsettings["nmute"],
                      important = tcsettings["important"],
                      index = listpos,
